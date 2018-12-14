@@ -1,7 +1,7 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Game} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
@@ -12,7 +12,14 @@ async function seed() {
     User.create({email: 'murphy@email.com', password: '123'})
   ])
 
+  const games = await Promise.all([
+    Game.create({board: [['P2_Rook', 'P2_Knight', 'P2_Bishop', 'P2_Queen', 'P2_King', 'P2_Bishop', 'P2_Knight', 'P2_Rook'], ['P2_Pawn', 'P2_Pawn', 'P2_Pawn', 'P2_Pawn', 'P2_Pawn', 'P2_Pawn', 'P2_Pawn', 'P2_Pawn'], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['P1_Pawn', 'P1_Pawn', 'P1_Pawn', 'P1_Pawn', 'P1_Pawn', 'P1_Pawn', 'P1_Pawn', 'P1_Pawn'], ['P1_Rook', 'P1_Knight', 'P1_Bishop', 'P1_Queen', 'P1_King', 'P1_Bishop', 'P1_Knight', 'P1_Rook']]})
+  ])
+
   console.log(`seeded ${users.length} users`)
+  console.log(`seeded successfully`)
+
+  console.log(`seeded ${games.length} games`)
   console.log(`seeded successfully`)
 }
 
