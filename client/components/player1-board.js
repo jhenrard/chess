@@ -9,6 +9,10 @@ class Player1Board extends React.Component {
       selectedPiece: '',
     }
     this.handleSelect = this.handleSelect.bind(this)
+    this.onDrag = this.onDrag.bind(this)
+    this.onDrop = this.onDrop.bind(this)
+    this.onDragOver = this.onDragOver.bind(this)
+    this.onDragStart = this.onDragStart.bind(this)
   }
 
   async componentDidMount () {
@@ -23,6 +27,37 @@ class Player1Board extends React.Component {
     console.log(selectedPiece)
   }
 
+  onDragStart (event) {
+    event.target.className = 'drag'
+  }
+
+  onDrag (event, square) {
+    event.preventDefault()
+    event.dataTransfer.dropEffect = 'move'
+    event.target.className = 'drag'
+
+    this.setState({selectedPiece: square})
+
+  }
+
+  onDragOver (event) {
+    event.preventDefault()
+    event.dataTransfer.dropEffect = 'move'
+    if (event.target.nodeName !== 'IMG') {
+      event.target.style.backgroundColor = '#ffff99'
+    }
+    // event.target.style.backgroundColor = "yellow"
+    // event.target.style.width = "60px"
+    // event.target.style.height = "60px"
+    // event.dataTransfer.effectAllowed = 'none'
+  }
+
+  onDrop (event, rowIdx, col) {
+    let newBoard = [...this.state.board]
+    newBoard[rowIdx][col] = this.state.selectedPiece
+    this.setState({board: newBoard, selectedPiece: ''})
+  }
+
   render () {
     const board = this.state.board
     return (
@@ -35,8 +70,8 @@ class Player1Board extends React.Component {
                   <tr key={rowIdx}>
                     {
                       row.map( (square, col) => {
-                      return <td onClick={() => this.handleSelect(rowIdx, col)} className={((rowIdx + col) % 2 === 0) ? "white-square" : "brown-square"}
-                      key={col}>{square.length > 0 && <img src={`/${square}.png`} />}</td>
+                      return <td className={((rowIdx + col) % 2 === 0) ? "white-square" : "brown-square"}
+                      key={col} onDragLeave={event.preventDefault} onDrop={event => this.onDrop(event, rowIdx, col)} onDragOver={event => this.onDragOver(event)}>{square.length > 0 && <img className="grab" onDragStart={this.onDragStart} onClick={() => this.handleSelect(rowIdx, col)} onDrag={event => this.onDrag(event, square)} src={`/${square}.png`} />}</td>
                     })
                     }
                   </tr>
