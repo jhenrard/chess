@@ -1,12 +1,13 @@
 import React from 'react'
 
-import {Navbar, Player1Board} from './components'
+import {Navbar, Player1Board, Square, Board} from './components'
 import Routes from './routes'
 
 const App = () => {
   return (
     <div>
-      <Player1Board />
+      <Board />
+      {/* <Player1Board /> */}
 
       {/* // Boilermaker code I don't need for the chess app
       <Navbar />

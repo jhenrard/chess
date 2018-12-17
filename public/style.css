@@ -1,3 +1,7 @@
+:root {
+  --square-size: 75px;
+}
+/*
 .grab {
   cursor: move;
   cursor: grab;
@@ -6,16 +10,23 @@
 }
 
 .grab:active {
-  /* cursor: url(images/grabbing.cur);
+  cursor: url(images/grabbing.cur);
   cursor: grabbing;
   cursor: -moz-grabbing;
-  cursor: -webkit-grabbing; */
+  cursor: -webkit-grabbing;
   cursor: url('https://www.google.com/intl/en_ALL/mapfiles/closedhand.cur'), auto;
   cursor: -webkit-grabbing;
   cursor: -moz-grabbing;
   cursor: -o-grabbing;
   cursor: -ms-grabbing;
   cursor: grabbing;
+} */
+
+#board {
+  width: calc(var(--square-size) * 8);
+  height: calc(var(--square-size) * 8);
+  margin: 50px;
+  border: 20px solid rgb(57, 26, 20);
 }
 
 html {
@@ -29,7 +40,7 @@ body {
   align-items: center;
   font-family: sans-serif;
 }
-
+/*
 table {
   margin: 50px;
   border-spacing: 0;
@@ -43,14 +54,28 @@ td {
   width: 75px;
   background-color: lightgrey;
   text-align: center;
-}
+} */
 
 .white-square {
   background-color: papayawhip;
+  width: var(--square-size);
+  height: var(--square-size);
+  line-height: var(--square-size);
+  float: left;
+  text-align: center;
 }
 
 .brown-square {
   background-color: rgb(155, 79, 24);
+  width: var(--square-size);
+  height: var(--square-size);
+  line-height: var(--square-size);
+  float: left;
+  text-align: center;
+}
+
+img {
+  vertical-align: middle;
 }
 
 a {
