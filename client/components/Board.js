@@ -8,7 +8,6 @@ class Board extends React.Component {
     super()
     this.state = {
       board: [],
-      selectedPiece: '',
     }
     this.dropPiece = this.dropPiece.bind(this)
   }
@@ -20,17 +19,27 @@ class Board extends React.Component {
     this.setState({id: board.id, board: componentBoard})
   }
 
-  dropPiece = (piece, from, to) => {
+  dropPiece = (newComponent, piece, from, to) => {
     const newBoard = [...this.state.board]
-    newBoard[from.x][from.y] = ''
-    newBoard[to.x][to.y] = piece
+
+    if (piece.piece === 'Pawn') {
+      const fromX = from.x, fromY = from.y, toX = to.x, toY = to.y
+      const forward = (toX - fromX === -1) && (toY === fromY)
+      const diagonal = (toX - fromX === -1) && (Math.abs(toY - fromY) === 1)
+      const opponentPieceToTake = this.state.board[toX][toY] && this.state.board[toX][toY].props.piece.player === 2 // REMEMBER TO REFACTOR FOR PLAYER 2 VIEW
+      if ((forward && !opponentPieceToTake) || (diagonal && opponentPieceToTake)) {
+        newBoard[from.x][from.y] = ''
+        newBoard[to.x][to.y] = newComponent
+      }
+    }
+
     this.setState({board: newBoard})
   }
 
   createPieceObjects (serverBoard) {
     const componentBoard = serverBoard.map( (row, rowIdx) => {
       return row.map( (serverPiece, col) => {
-        const player = serverPiece[1]
+        const player = Number(serverPiece[1])
         const piece = serverPiece.slice(3)
         if (piece.length) {
           return <Piece piece={{player, x: rowIdx, y: col, piece}} />

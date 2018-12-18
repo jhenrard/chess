@@ -11,7 +11,7 @@ const squareTarget = {
     piece.y = props.y
 
     const newComponent = <Piece piece={{piece: piece.piece, x: piece.x, y: piece.y, player: piece.player}} />
-    props.dropPiece(newComponent, {x: fromX, y: fromY}, {x: piece.x, y: piece.y})
+    props.dropPiece(newComponent, piece, {x: fromX, y: fromY}, {x: piece.x, y: piece.y})
   }
 }
 
