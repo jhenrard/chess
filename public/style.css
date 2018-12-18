@@ -63,6 +63,7 @@ td {
   line-height: var(--square-size);
   float: left;
   text-align: center;
+  position: relative;
 }
 
 .brown-square {
@@ -72,10 +73,17 @@ td {
   line-height: var(--square-size);
   float: left;
   text-align: center;
+  position: relative;
 }
 
 img {
   vertical-align: middle;
+  background-color: transparent;
+}
+
+#test {
+  background-color: transparent;
+  color: transparent;
 }
 
 a {

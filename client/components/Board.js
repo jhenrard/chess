@@ -1,6 +1,7 @@
 import React from 'react'
-import Square from './Square'
 import axios from 'axios'
+import Square from './Square'
+import {Pawn, Rook, Knight, Bishop, Queen, King} from './Pieces'
 
 class Board extends React.Component {
   constructor() {
@@ -9,6 +10,7 @@ class Board extends React.Component {
       board: [],
       selectedPiece: '',
     }
+    this.dropPiece = this.dropPiece.bind(this)
   }
 
   async componentDidMount () {
@@ -18,21 +20,39 @@ class Board extends React.Component {
     this.setState({id: board.id, board: componentBoard})
   }
 
+  dropPiece = (piece, from, to) => {
+    const newBoard = [...this.state.board]
+    newBoard[from.x][from.y] = ''
+    newBoard[to.x][to.y] = piece
+    this.setState({board: newBoard})
+  }
+
   createPieceObjects (serverBoard) {
     const componentBoard = serverBoard.map( (row, rowIdx) => {
-      return row.map( (piece, col) => {
-        const player = piece[1]
-        const type = piece.slice(3)
-        const image = (piece.length) ? `/${piece}.png` : ''
-        return {
-          piece: type,
-          player,
-          row: rowIdx,
-          col,
-          image
+      return row.map( (serverPiece, col) => {
+        const player = serverPiece[1]
+        const piece = serverPiece.slice(3)
+        // const image = (serverPiece.length) ? `/${serverPiece}.png` : ''
+        switch (piece) {
+          case 'Pawn':
+            return <Pawn piece={{player, x: rowIdx, y: col}} />
+          case 'Rook':
+            return <Rook piece={{player, x: rowIdx, y: col}} />
+          case 'Knight':
+            return <Knight piece={{player, x: rowIdx, y: col}} />
+          case 'Bishop':
+            return <Bishop piece={{player, x: rowIdx, y: col}} />
+          case 'Queen':
+            return <Queen piece={{player, x: rowIdx, y: col}} />
+          case 'King':
+            return <King piece={{player, x: rowIdx, y: col}} />
+          default:
+            return ''
         }
       })
     })
+    // componentBoard[1][1] = <Pawn piece={{player: 2, x: 1, y: 1}} />
+    // console.log(componentBoard)
     return componentBoard
   }
 
@@ -41,15 +61,15 @@ class Board extends React.Component {
     if (!this.state.board[0]) { return null }
     for (let i = 0; i < 64; i++) {
       const row = Math.floor(i / 8)
-      const col = Math.floor(i % 8)
-      squares.push(<Square key={i} chessman={this.state.board[row][col]}
-        colorClass={(((row + col) % 2) === 0) ? 'white-square' : 'brown-square'} />)
+      const col = (i % 8)
+      squares.push(<Square key={i} x={row} y={col} dropPiece={this.dropPiece}
+        colorClass={(((row + col) % 2) === 0) ? 'white-square' : 'brown-square'}>{this.state.board[row][col]}</Square>)
     }
 
     return (
-      <div id='board'>
-      { squares }
-    </div>
+        <div id='board'>
+        { squares }
+        </div>
     )
   }
 }
