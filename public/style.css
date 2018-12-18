@@ -63,7 +63,6 @@ td {
   line-height: var(--square-size);
   float: left;
   text-align: center;
-  position: relative;
 }
 
 .brown-square {
@@ -73,17 +72,26 @@ td {
   line-height: var(--square-size);
   float: left;
   text-align: center;
-  position: relative;
+}
+
+.highlight {
+  width: var(--square-size);
+  height: var(--square-size);
+  line-height: var(--square-size);
+  float: left;
+  text-align: center;
+  opacity: 0.5;
+  background-color: yellow;
 }
 
 img {
   vertical-align: middle;
   background-color: transparent;
+  cursor: grab;
 }
 
-#test {
-  background-color: transparent;
-  color: transparent;
+img:active {
+  cursor: grabbing;
 }
 
 a {

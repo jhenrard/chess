@@ -1,13 +1,13 @@
 import React from 'react'
 import { DragSource } from 'react-dnd'
 
-const pawnSourceContract = {
+const pieceSource = {
   beginDrag(props) {
     return {
       x: props.piece.x,
       y: props.piece.y,
       player: props.piece.player,
-      piece: 'Pawn',
+      piece: props.piece.piece,
     }
   }
 }
@@ -20,14 +20,14 @@ const collect = (connect, monitor) => {
   }
 }
 
-const Pawn = (props) => {
+const Piece = (props) => {
   const img = new Image()
-  img.src = `/P${props.piece.player}_Pawn.png`
+  img.src = `/P${props.piece.player}_${props.piece.piece}.png`
   props.connectDragPreview(img)
 
   return props.connectDragSource(
-      <img src={`/P${props.piece.player}_Pawn.png`} />
+      <img src={`/P${props.piece.player}_${props.piece.piece}.png`} />
     )
 }
 
-export default DragSource('Pawn', pawnSourceContract, collect)(Pawn)
+export default DragSource('Piece', pieceSource, collect)(Piece)

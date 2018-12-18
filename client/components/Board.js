@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import Square from './Square'
 import {Pawn, Rook, Knight, Bishop, Queen, King} from './Pieces'
+import Piece from './Piece'
 
 class Board extends React.Component {
   constructor() {
@@ -33,22 +34,27 @@ class Board extends React.Component {
         const player = serverPiece[1]
         const piece = serverPiece.slice(3)
         // const image = (serverPiece.length) ? `/${serverPiece}.png` : ''
-        switch (piece) {
-          case 'Pawn':
-            return <Pawn piece={{player, x: rowIdx, y: col}} />
-          case 'Rook':
-            return <Rook piece={{player, x: rowIdx, y: col}} />
-          case 'Knight':
-            return <Knight piece={{player, x: rowIdx, y: col}} />
-          case 'Bishop':
-            return <Bishop piece={{player, x: rowIdx, y: col}} />
-          case 'Queen':
-            return <Queen piece={{player, x: rowIdx, y: col}} />
-          case 'King':
-            return <King piece={{player, x: rowIdx, y: col}} />
-          default:
-            return ''
+        if (piece.length) {
+          return <Piece piece={{player, x: rowIdx, y: col, piece}} />
+        } else {
+          return ''
         }
+        // switch (piece) {
+        //   case 'Pawn':
+        //     return <Pawn piece={{player, x: rowIdx, y: col}} />
+        //   case 'Rook':
+        //     return <Rook piece={{player, x: rowIdx, y: col}} />
+        //   case 'Knight':
+        //     return <Knight piece={{player, x: rowIdx, y: col}} />
+        //   case 'Bishop':
+        //     return <Bishop piece={{player, x: rowIdx, y: col}} />
+        //   case 'Queen':
+        //     return <Queen piece={{player, x: rowIdx, y: col}} />
+        //   case 'King':
+        //     return <King piece={{player, x: rowIdx, y: col}} />
+        //   default:
+        //     return ''
+        // }
       })
     })
     // componentBoard[1][1] = <Pawn piece={{player: 2, x: 1, y: 1}} />
