@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {createComponentPieces} from '../util'
+import {createComponentPieces} from '../gamelogic'
 
 // action types
 
@@ -28,10 +28,8 @@ export const fetchBoard = (id) => {
 
 export const updateBoard = (id, updatedServerBoard) => {
   return async (dispatch) => {
-    console.log('serverBoard passed to thunk', updatedServerBoard)
     const res = await axios.put(`/api/games/${id}`, updatedServerBoard)
     const game = res.data[1][0]
-    console.log(game)
     const componentBoard = createComponentPieces(game.board)
     dispatch(gotBoard(componentBoard))
   }
