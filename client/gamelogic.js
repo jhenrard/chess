@@ -38,6 +38,12 @@ const isPawnMoveValid = (from, to, board) => {
   return ((forward && !opponentPieceToTake) || (diagonal && opponentPieceToTake))
 }
 
+/////////////////////////////////////////////////////////////////
+
+///  PIECE ALREADY HAS FROM INCLUDED, DO NOT NEED EXTRA PARAM ///
+
+/////////////////////////////////////////////////////////////////
+
 export function dropPiece (newComponent, piece, from, to, board) {
   const newBoard = [...board]
 
@@ -46,4 +52,23 @@ export function dropPiece (newComponent, piece, from, to, board) {
       newBoard[to.x][to.y] = newComponent
     }
   return newBoard
+}
+
+export function checkSquare(piece, from, to, board) {
+  return (piece.piece === 'Pawn' && isPawnMoveValid(from, to, board))
+}
+
+// NEED TO REFACTOR TO ONLY EVALUATE POSSIBLE ROUTES. CHECKING WHOLE BOARD UNTIL IT WORKS
+export function findDestinationsForPiece(piece, from, board) {
+  const validDestinations = []
+  if (piece === 'Pawn') {
+    for (let i = 0; i < 64; i++) {
+      const row = Math.floor(i / 8)
+      const col = i % 8
+      if (isPawnMoveValid(from, {x: row, y: col}, board)) {
+        validDestinations.push(i)
+      }
+    }
+  }
+  return validDestinations
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Square from './Square'
 import {fetchBoard, updateBoard} from '../store/board'
+import {removeAllSquares} from '../store/validSquares'
 
 class Board extends React.Component {
 
@@ -16,8 +17,7 @@ class Board extends React.Component {
     for (let i = 0; i < 64; i++) {
       const row = Math.floor(i / 8)
       const col = (i % 8)
-      squares.push(<Square key={i} x={row} y={col} {...this.props}
-        colorClass={(((row + col) % 2) === 0) ? 'white-square' : 'brown-square'}>{board[row][col]}</Square>)
+      squares.push(<Square key={i} x={row} y={col} {...this.props} colorClass={(((row + col) % 2) === 0) ? 'white-square' : 'brown-square'}>{board[row][col]}</Square>) //refactor Square.js to import store. should not pass {...this.props}
     }
 
     return (
