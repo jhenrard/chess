@@ -38,6 +38,7 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchBoard: () => dispatch(fetchBoard(1)),
     updateBoard: (newBoard) => dispatch(updateBoard(1, newBoard)),
+    removeAllSquares: () => dispatch(removeAllSquares()),
   }
 }
 

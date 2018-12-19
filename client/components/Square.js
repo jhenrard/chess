@@ -6,6 +6,7 @@ import {createServerPieces, dropPiece, checkSquare} from '../gamelogic'
 
 const squareTarget = {
   drop(props, monitor) {
+    props.removeAllSquares()
     const piece = monitor.getItem()
     const newComponent = <Piece piece={{piece: piece.piece, x: props.x, y: props.y, player: piece.player}} />
     const newBoard = dropPiece(newComponent, piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board)
