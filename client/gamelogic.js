@@ -30,13 +30,53 @@ export function createServerPieces (componentBoard) {
   return serverBoard
 }
 
-const isPawnMoveValid = (from, to, board) => {
-  const fromX = from.x, fromY = from.y, toX = to.x, toY = to.y
-  const forward = (toX - fromX === -1) && (toY === fromY)
-  const diagonal = (toX - fromX === -1) && (Math.abs(toY - fromY) === 1)
-  const opponentPieceToTake = board[toX][toY] && board[toX][toY].props.piece.player === 2 // REMEMBER TO REFACTOR FOR PLAYER 2 VIEW
-  return ((forward && !opponentPieceToTake) || (diagonal && opponentPieceToTake))
+//////////////////////////////////////
+/////   UTILITIES FOR CHECKING   /////
+//////////////////////////////////////
+
+const moveDirection = (from, to) => {
+
 }
+
+//////////////////////////////////
+/////   PAWN MOVE CHECKING   /////
+//////////////////////////////////
+
+
+// ASK GABE ABOUT THIS - LINTER DID NOT LIKE COMPLEXITY AND EVENTUALLY BROKE CLICK HANDLER UNTIL MOVE SOME OF IF THEN INTO PAWN MOVE FUNCTION. WAS IN FACT PERFORMING UNNECESSARY CHECKS BUT STILL A LOT NOW
+const isPawnMoveValid = (from, to, board) => {
+  const moveType = pawnMove(from, to)
+  const ownPieceInWay = board[to.x][to.y] && board[to.x][to.y].props.piece.player === 1
+  const opponentPieceToTake = board[to.x][to.y] && board[to.x][to.y].props.piece.player === 2
+  const valid = ((moveType === 'diagonal' && !opponentPieceToTake) || (moveType === 'forward' && opponentPieceToTake)) ? 'invalid' : moveType
+  return (valid !== 'invalid' && !ownPieceInWay)
+}
+
+const pawnMove = (from, to) => {
+  const fromX = from.x, fromY = from.y, toX = to.x, toY = to.y
+  if (fromY === toY && toX - fromX === -1) {
+    return 'forward'
+  } else if ((toX - fromX === -1) && (Math.abs(toY - fromY) === 1)) {
+    return 'diagonal'
+  } else if ((fromY === toY) && (toX - fromX === -2) && fromX === 6) {
+    return 'doubleForward'
+  } else {
+    return 'invalid'
+  }
+}
+
+//////////////////////////////////
+/////   QUEEN MOVE CHECKING   /////
+//////////////////////////////////
+
+const isQueenMoveValid = (from, to, board) => {
+  const moveType = queenMove(from, to)
+}
+
+const queenMove = (from, to) => {
+
+}
+
 
 /////////////////////////////////////////////////////////////////
 
@@ -54,11 +94,12 @@ export function dropPiece (newComponent, piece, from, to, board) {
   return newBoard
 }
 
+// THIS IS USED BY SQUARE.JS DROP TARGET TO CHECK IF EACH SQUARE IS VALID MOVE FOR HIGHLIGHTING
 export function checkSquare(piece, from, to, board) {
   return (piece.piece === 'Pawn' && isPawnMoveValid(from, to, board))
 }
 
-// NEED TO REFACTOR TO ONLY EVALUATE POSSIBLE ROUTES. CHECKING WHOLE BOARD UNTIL IT WORKS
+// USED BY CLICK HANDLER FOR HIGHLIGHTING. NEED TO REFACTOR TO ONLY EVALUATE POSSIBLE ROUTES. CHECKING WHOLE BOARD UNTIL IT WORKS
 export function findDestinationsForPiece(piece, from, board) {
   const validDestinations = []
   if (piece === 'Pawn') {

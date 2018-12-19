@@ -7,10 +7,8 @@ import {createServerPieces, dropPiece, checkSquare} from '../gamelogic'
 const squareTarget = {
   drop(props, monitor) {
     const piece = monitor.getItem()
-    const fromX = piece.x, fromY = piece.y
-
     const newComponent = <Piece piece={{piece: piece.piece, x: props.x, y: props.y, player: piece.player}} />
-    const newBoard = dropPiece(newComponent, piece, {x: fromX, y: fromY}, {x: props.x, y: props.y}, props.board)
+    const newBoard = dropPiece(newComponent, piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board)
     props.updateBoard(createServerPieces(newBoard)) // refactor to import store and use dispatch
   },
   canDrop(props, monitor) {
@@ -40,8 +38,6 @@ class Square extends React.Component {
       )
   }
 }
-
-  // hover higlight !props.isOver &&
 
 const mapStateToProps = state => {
   return {
