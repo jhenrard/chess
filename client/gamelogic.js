@@ -46,10 +46,16 @@ const FORWARDLEFT = 'forwardleft'
 const FORWARDRIGHT = 'forwardright'
 const BACKLEFT = 'backleft'
 const BACKRIGHT = 'backright'
-const KNIGHT = 'knight'
+const KNIGHTMOVE = 'knight'
 const INVALID = 'invalid'
 const LOWER_BOUND = 0
 const UPPER_BOUND = 7
+const PAWN = 'Pawn'
+const QUEEN = 'Queen'
+const KING = 'King'
+const ROOK = 'Rook'
+const KNIGHT = 'Knight'
+const BISHOP = 'Bishop'
 
 const evaluateMoveDirection = (from, to) => {
   const directions = [
@@ -85,15 +91,11 @@ const evaluateMoveDirection = (from, to) => {
       direction: BACKRIGHT,
       condition: () => (from.x - to.x === (from.y - to.y) && to.y > from.y),
     },
+    {
+      direction: KNIGHTMOVE,
+      condition: () => (Math.abs(from.x - to.x) === 1 && (Math.abs(from.y - to.y) === 2) || ((Math.abs(from.x - to.x) === 2) && (Math.abs(from.y - to.y) === 1))),
+    }
   ]
-
-
-  //SAVING LOGIC FOR KNIGHT. NEED TO IMPLEMENT SEPARATELY? KNIGHT DOESNT INCREMENT THE SAME WAY
-  // {
-  //   direction: KNIGHT,
-  //   condition: () => (Math.abs(from.x - to.x) === 1 && (Math.abs(from.y - to.y) === 2) || (Math.abs(from.x - to.x) === 2) && (Math.abs(from.y - to.y === 1))),
-  // }
-
 
   for (let i = 0; i < directions.length; i++) {
     if (directions[i].condition(from, to)) return directions[i].direction
@@ -182,8 +184,71 @@ const evaluateMaxMoveDistance = (direction, from, to, board) => {
   return 0
 }
 
+/// KING, QUEEN, ROOK, BISHOP VERY SIMILAR MINUS DISTANCE CONDITION AND VALIDDIRECTIONS. COULD REFACTOR INTO HIGHER ORDER FUNCTION
+
 ///////////////////////////////////////////////////////////////////////////////////
-/////     PAWN MOVE CHECKING - ISOLATED FROM REST DUE TO DIFFERENT LOGIC      /////
+/////                           QUEEN MOVE CHECKING                           /////
+///////////////////////////////////////////////////////////////////////////////////
+
+const isQueenMoveValid = (from, to, board) => {
+  const validDirections = [FORWARD, BACK, LEFT, RIGHT, FORWARDLEFT, FORWARDRIGHT, BACKLEFT, BACKRIGHT]
+  const currentMoveDirection = evaluateMoveDirection(from, to)
+  const currentMoveDirectionMaxLength = (validDirections.includes(currentMoveDirection)) ? evaluateMaxMoveDistance(currentMoveDirection, from, to, board) : INVALID
+  return (evaluateMoveDistance(from, to) <= currentMoveDirectionMaxLength)
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+/////                           KING MOVE CHECKING                            /////
+///////////////////////////////////////////////////////////////////////////////////
+
+const isKingMoveValid = (from, to, board) => {
+  const validDirections = [FORWARD, BACK, LEFT, RIGHT, FORWARDLEFT, FORWARDRIGHT, BACKLEFT, BACKRIGHT]
+  const currentMoveDirection = evaluateMoveDirection(from, to)
+  const currentMoveDirectionMaxLength = (validDirections.includes(currentMoveDirection)) ? evaluateMaxMoveDistance(currentMoveDirection, from, to, board) : INVALID
+  return evaluateMoveDistance(from, to) <= Math.min(currentMoveDirectionMaxLength, 1)
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+/////                           BISHOP MOVE CHECKING                          /////
+///////////////////////////////////////////////////////////////////////////////////
+
+const isBishopMoveValid = (from, to, board) => {
+  const validDirections = [FORWARDLEFT, FORWARDRIGHT, BACKLEFT, BACKRIGHT]
+  const currentMoveDirection = evaluateMoveDirection(from, to)
+  const currentMoveDirectionMaxLength = (validDirections.includes(currentMoveDirection)) ? evaluateMaxMoveDistance(currentMoveDirection, from, to, board) : INVALID
+  return (evaluateMoveDistance(from, to) <= currentMoveDirectionMaxLength)
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+/////                           ROOK MOVE CHECKING                          /////
+///////////////////////////////////////////////////////////////////////////////////
+
+const isRookMoveValid = (from, to, board) => {
+  const validDirections = [FORWARD, BACK, LEFT, RIGHT]
+  const currentMoveDirection = evaluateMoveDirection(from, to)
+  const currentMoveDirectionMaxLength = (validDirections.includes(currentMoveDirection)) ? evaluateMaxMoveDistance(currentMoveDirection, from, to, board) : INVALID
+  return (evaluateMoveDistance(from, to) <= currentMoveDirectionMaxLength)
+}
+
+
+// COULD REFACTOR SOME OF THE CONDITIONALS IN KNIGHT MOVE CHECKING
+
+///////////////////////////////////////////////////////////////////////////////////
+/////                            KNIGHT MOVE CHECKING                         /////
+///////////////////////////////////////////////////////////////////////////////////
+
+const validKnightDestinationCoords = (from, to) => {
+  return to.x <= UPPER_BOUND && to.y <= UPPER_BOUND && to.x >= LOWER_BOUND && to.y >= LOWER_BOUND
+}
+
+const isKnightMoveValid = (from, to, board) => {
+  const validDestinationCoords = validKnightDestinationCoords(from, to)
+  const validDestinationPiece = (board[to.x][to.y] && board[to.x][to.y].props.piece.player !== 1) || (validDestinationCoords && !board[to.x][to.y])
+  return (validDestinationCoords && evaluateMoveDirection(from, to) === KNIGHTMOVE && validDestinationPiece)
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+/////     PAWN MOVE CHECKING - NEED TO REFACTOR AND ADD EN PASSANT MOVE       /////
 ///////////////////////////////////////////////////////////////////////////////////
 
 const pawnMove = (from, to) => {
@@ -207,94 +272,82 @@ const isPawnMoveValid = (from, to, board) => {
   return (valid !== 'invalid' && !ownPieceInWay)
 }
 
-
-///////////////////////////////////////////////////////////////////////////////////
-/////                           QUEEN MOVE CHECKING                           /////
-///////////////////////////////////////////////////////////////////////////////////
-
-const isQueenMoveValid = (from, to, board) => {
-  const validDirections = [FORWARD, BACK, LEFT, RIGHT, FORWARDLEFT, FORWARDRIGHT, BACKLEFT, BACKRIGHT]
-  const currentMoveDirection = evaluateMoveDirection(from, to)
-  const currentMoveDirectionMaxLength = evaluateMaxMoveDistance(currentMoveDirection, from, to, board)
-  return (validDirections.includes(currentMoveDirection) && (evaluateMoveDistance(from, to) <= currentMoveDirectionMaxLength))
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-/////                            KING MOVE CHECKING                           /////
-///////////////////////////////////////////////////////////////////////////////////
-
-const isKingMoveValid = (from, to, board) => {
-  const validDirections = [FORWARD, BACK, LEFT, RIGHT, FORWARDLEFT, FORWARDRIGHT, BACKLEFT, BACKRIGHT]
-  const currentMoveDirection = evaluateMoveDirection(from, to)
-  const currentMoveDirectionMaxLength = evaluateMaxMoveDistance(currentMoveDirection, from, to, board)
-  return (validDirections.includes(currentMoveDirection) && (evaluateMoveDistance(from, to) <= Math.min(currentMoveDirectionMaxLength, 1)))
-}
-
 /////////////////////////////////////////////////////////////////
 ///  PIECE ALREADY HAS FROM INCLUDED, DO NOT NEED EXTRA PARAM ///
 /////////////////////////////////////////////////////////////////
 
+// THIS IS USED BY THE DROPPIECE, CHECKSQUARE, AND FINDDESTINATIONSFORPIECES FUNCTIONS BELOW
+const pieceMoveCheckFunctions = {
+  [PAWN]: isPawnMoveValid,
+  [QUEEN]: isQueenMoveValid,
+  [KING]: isKingMoveValid,
+  [KNIGHT]: isKnightMoveValid,
+  [BISHOP]: isBishopMoveValid,
+  [ROOK]: isRookMoveValid,
+}
 
- ///////////// MOVE TO UTILS FILE /////////////
 // THIS IS USED BY SQUARE.JS DROP TARGET TO COMPLETE THE DROP
 export function dropPiece (newComponent, piece, from, to, board) {
   const newBoard = [...board]
 
-  if (piece.piece === 'Pawn' && isPawnMoveValid(from, to, board)) {
-    newBoard[from.x][from.y] = ''
-    newBoard[to.x][to.y] = newComponent
-  } else if (piece.piece === 'Queen' && isQueenMoveValid(from, to, board)) {
-    newBoard[from.x][from.y] = ''
-    newBoard[to.x][to.y] = newComponent
-  } else if (piece.piece === 'King' && isKingMoveValid(from, to, board)) {
+  if (pieceMoveCheckFunctions[piece.piece](from, to, board)) {
     newBoard[from.x][from.y] = ''
     newBoard[to.x][to.y] = newComponent
   }
+
   return newBoard
+
+  // if (piece.piece === 'Pawn' && isPawnMoveValid(from, to, board)) {
+  // } else if (piece.piece === 'Queen' && isQueenMoveValid(from, to, board)) {
+  //   newBoard[from.x][from.y] = ''
+  //   newBoard[to.x][to.y] = newComponent
+  // } else if (piece.piece === 'King' && isKingMoveValid(from, to, board)) {
+  //   newBoard[from.x][from.y] = ''
+  //   newBoard[to.x][to.y] = newComponent
+  // }
 }
 
- ///////////// MOVE TO UTILS FILE /////////////
 // THIS IS USED BY SQUARE.JS DROP TARGET TO CHECK IF EACH SQUARE IS VALID MOVE FOR HIGHLIGHTING
 export function checkSquare(piece, from, to, board) {
-  if (piece.piece === 'Pawn') {
-    return isPawnMoveValid(from, to, board)
-  } else if (piece.piece === 'Queen') {
-    return isQueenMoveValid(from, to, board)
-  } else if (piece.piece === 'King') {
-    return isKingMoveValid(from, to, board)
-  }
+  return pieceMoveCheckFunctions[piece.piece](from, to, board)
 }
 
-///////////// MOVE TO UTILS FILE /////////////
-// USED BY CLICK HANDLER FOR HIGHLIGHTING. NEED TO REFACTOR TO ONLY EVALUATE POSSIBLE ROUTES. CHECKING WHOLE BOARD UNTIL IT WORKS
+// USED BY CLICK HANDLER FOR HIGHLIGHTING. NEED TO REFACTOR TO ONLY EVALUATE POSSIBLE ROUTES. CHECKING WHOLE BOARD UNTIL EVERYTHING WORKS
 export function findDestinationsForPiece(piece, from, board) {
   const validDestinations = []
-  if (piece === 'Pawn') {
-    for (let i = 0; i < 64; i++) {
-      const row = Math.floor(i / 8)
-      const col = i % 8
-      if (isPawnMoveValid(from, {x: row, y: col}, board)) {
-        validDestinations.push(i)
-      }
-    }
-  }
-  if (piece === 'Queen') {
-    for (let i = 0; i < 64; i++) {
-      const row = Math.floor(i / 8)
-      const col = i % 8
-      if (isQueenMoveValid(from, {x: row, y: col}, board)) {
-        validDestinations.push(i)
-      }
-    }
-  }
-  if (piece === 'King') {
-    for (let i = 0; i < 64; i++) {
-      const row = Math.floor(i / 8)
-      const col = i % 8
-      if (isKingMoveValid(from, {x: row, y: col}, board)) {
-        validDestinations.push(i)
-      }
-    }
+
+  for (let i = 0; i < 64; i++) {
+    const row = Math.floor(i / 8)
+    const col = i % 8
+    pieceMoveCheckFunctions[piece](from, {x: row, y: col}, board) && validDestinations.push(i)
   }
   return validDestinations
 }
+
+  // if (piece === 'Pawn') {
+  //   for (let i = 0; i < 64; i++) {
+  //     const row = Math.floor(i / 8)
+  //     const col = i % 8
+  //     if (isPawnMoveValid(from, {x: row, y: col}, board)) {
+  //       validDestinations.push(i)
+  //     }
+  //   }
+  // }
+  // if (piece === 'Queen') {
+  //   for (let i = 0; i < 64; i++) {
+  //     const row = Math.floor(i / 8)
+  //     const col = i % 8
+  //     if (isQueenMoveValid(from, {x: row, y: col}, board)) {
+  //       validDestinations.push(i)
+  //     }
+  //   }
+  // }
+  // if (piece === 'King') {
+  //   for (let i = 0; i < 64; i++) {
+  //     const row = Math.floor(i / 8)
+  //     const col = i % 8
+  //     if (isKingMoveValid(from, {x: row, y: col}, board)) {
+  //       validDestinations.push(i)
+  //     }
+  //   }
+  // }
