@@ -43,6 +43,8 @@ const FORWARDRIGHT = 'forwardright'
 const DIAGONAL = 'diagonal'
 const KNIGHT = 'knight'
 const INVALID = 'invalid'
+const LOWER_BOUND = 0
+const UPPER_BOUND = 7
 
 const evaluateMoveDirection = (from, to) => {
   const directions = [
@@ -63,6 +65,14 @@ const evaluateMoveDirection = (from, to) => {
       condition: () => (from.x === to.x && from.y < to.y),
     },
     {
+      direction: FORWARDLEFT,
+      condition: () => (from.x - to.x === from.y - to.y && from.x !== to.x),
+    },
+    {
+      direction: FORWARDRIGHT,
+      condition: () => (from.x - to.x === -(from.y - to.y) && from.x !== to.x),
+    },
+    {
       direction: DIAGONAL,
       condition: () => (Math.abs(from.x - to.x) === Math.abs(from.y - to.y) && from.x !== to.x),
     },
@@ -79,26 +89,76 @@ const evaluateMoveDirection = (from, to) => {
   return INVALID
 }
 
-// do i need this?
 const evaluateMoveDistance = (from, to) => {
   return Math.max(Math.abs(from.x - to.x), Math.abs(from.y - to.y))
 }
+
+// NEED TO REFACTOR / CONSOLIDATE ALL THESE PATHS. CODE IS VERY SIMILAR...
+
+const pathMaxDistanceFunctionCreator = (path) => {
+  const boardExistsConditions = {
+    [FORWARD]: (nextSquareX, nextSquareY) => nextSquareX >= LOWER_BOUND && nextSquareY >= LOWER_BOUND
+  }
+
+
+
+  return function (from, board) {
+    let maxDistance = 0
+    let nextSquareY = from.y - 1
+    let nextSquareX = from.x - 1
+    let nextSquare = (nextSquareX >= LOWER_BOUND && nextSquareY >= LOWER_BOUND) && board[nextSquareX][nextSquareY]
+
+    while (nextSquareY >= LOWER_BOUND && nextSquareX >= LOWER_BOUND) {
+      if (nextSquare) {
+        maxDistance = maxDistance + nextSquare.props.piece.player - 1
+        return maxDistance
+      }
+      maxDistance = maxDistance + 1
+      nextSquareY = nextSquareY - 1
+      nextSquareX = nextSquareX - 1
+      nextSquare = (nextSquareX >= LOWER_BOUND && nextSquareY >= LOWER_BOUND) && board[nextSquareX][nextSquareY]
+    }
+    return maxDistance
+  }
+
+}
+
+//////// CODE EXISTS BELOW. COPIED UP HERE FOR REFERENCE ///////////
+// const evaluateForwardLeftPath = (from, to, board) => {
+//   let maxDistance = 0
+//   let nextSquareY = from.y - 1
+//   let nextSquareX = from.x - 1
+//   let nextSquare = (nextSquareX >= LOWER_BOUND && nextSquareY >= LOWER_BOUND) && board[nextSquareX][nextSquareY]
+
+//   while (nextSquareY >= LOWER_BOUND && nextSquareX >= LOWER_BOUND) {
+//     if (nextSquare) {
+//       maxDistance = maxDistance + nextSquare.props.piece.player - 1
+//       return maxDistance
+//     }
+//     maxDistance = maxDistance + 1
+//     nextSquareY = nextSquareY - 1
+//     nextSquareX = nextSquareX - 1
+//     nextSquare = (nextSquareX >= LOWER_BOUND && nextSquareY >= LOWER_BOUND) && board[nextSquareX][nextSquareY]
+//   }
+//   return maxDistance
+// }
+
 
 
 const evaluateForwardPath = (from, to, board) => {
   let maxDistance = 0
   let nextSquareX = from.x - 1
   const nextSquareY = from.y
-  let nextSquare = board[nextSquareX][nextSquareY]
+  let nextSquare = nextSquareX >= LOWER_BOUND && board[nextSquareX][nextSquareY]
 
-  while (nextSquareX >= 0) {
+  while (nextSquareX >= LOWER_BOUND) {
     if (nextSquare) {
       maxDistance = maxDistance + nextSquare.props.piece.player - 1
       return maxDistance
     }
     maxDistance = maxDistance + 1
     nextSquareX = nextSquareX - 1
-    nextSquare = (nextSquareX >= 0 && nextSquareX <= 7) ? board[nextSquareX][nextSquareY] : null
+    nextSquare = nextSquareX >= LOWER_BOUND && board[nextSquareX][nextSquareY]
   }
   return maxDistance
 }
@@ -107,20 +167,34 @@ const evaluateBackPath = (from, to, board) => {
   let maxDistance = 0
   let nextSquareX = from.x + 1
   const nextSquareY = from.y
-  while (nextSquareX < 8 && (!board[nextSquareX][nextSquareY] || (board[nextSquareX][nextSquareY] && board[nextSquareX][nextSquareY].props.piece.player === 2))) {
+  let nextSquare = nextSquareX <= UPPER_BOUND && board[nextSquareX][nextSquareY]
+
+  while (nextSquareX <= UPPER_BOUND) {
+    if (nextSquare) {
+      maxDistance = maxDistance + nextSquare.props.piece.player - 1
+      return maxDistance
+    }
     maxDistance = maxDistance + 1
     nextSquareX = nextSquareX + 1
+    nextSquare = nextSquareX <= UPPER_BOUND && board[nextSquareX][nextSquareY]
   }
   return maxDistance
 }
 
 const evaluateLeftPath = (from, to, board) => {
   let maxDistance = 0
-  let nextSquareY = from.y + 1
+  let nextSquareY = from.y - 1
   const nextSquareX = from.x
-  while (!board[nextSquareX][nextSquareY] || (board[nextSquareX][nextSquareY] && board[nextSquareX][nextSquareY].props.piece.player === 2)) {
+  let nextSquare = nextSquareY >= LOWER_BOUND && board[nextSquareX][nextSquareY]
+
+  while (nextSquareY >= LOWER_BOUND) {
+    if (nextSquare) {
+      maxDistance = maxDistance + nextSquare.props.piece.player - 1
+      return maxDistance
+    }
     maxDistance = maxDistance + 1
-    nextSquareY = nextSquareY + 1
+    nextSquareY = nextSquareY - 1
+    nextSquare = nextSquareY >= LOWER_BOUND && board[nextSquareX][nextSquareY]
   }
   return maxDistance
 }
@@ -129,34 +203,57 @@ const evaluateRightPath = (from, to, board) => {
   let maxDistance = 0
   let nextSquareY = from.y + 1
   const nextSquareX = from.x
-  while (!board[nextSquareX][nextSquareY] || (board[nextSquareX][nextSquareY] && board[nextSquareX][nextSquareY].props.piece.player === 2)) {
+  let nextSquare = nextSquareY <= UPPER_BOUND && board[nextSquareX][nextSquareY]
+
+  while (nextSquareY <= UPPER_BOUND) {
+    if (nextSquare) {
+      maxDistance = maxDistance + nextSquare.props.piece.player - 1
+      return maxDistance
+    }
     maxDistance = maxDistance + 1
     nextSquareY = nextSquareY + 1
+    nextSquare = nextSquareY <= UPPER_BOUND && board[nextSquareX][nextSquareY]
   }
   return maxDistance
 }
 
-const evaluateUpLeftPath = (from, to, board) => {
+const evaluateForwardLeftPath = (from, to, board) => {
   let maxDistance = 0
-  let nextSquareX = from.x + 1
-  const nextSquareY = from.y
-  while (!board[nextSquareX][nextSquareY] || (board[nextSquareX][nextSquareY] && board[nextSquareX][nextSquareY].props.piece.player === 2)) {
+  let nextSquareY = from.y - 1
+  let nextSquareX = from.x - 1
+  let nextSquare = (nextSquareX >= LOWER_BOUND && nextSquareY >= LOWER_BOUND) && board[nextSquareX][nextSquareY]
+
+  while (nextSquareY >= LOWER_BOUND && nextSquareX >= LOWER_BOUND) {
+    if (nextSquare) {
+      maxDistance = maxDistance + nextSquare.props.piece.player - 1
+      return maxDistance
+    }
     maxDistance = maxDistance + 1
-    nextSquareX = nextSquareX + 1
+    nextSquareY = nextSquareY - 1
+    nextSquareX = nextSquareX - 1
+    nextSquare = (nextSquareX >= LOWER_BOUND && nextSquareY >= LOWER_BOUND) && board[nextSquareX][nextSquareY]
   }
   return maxDistance
 }
 
-// const evaluateDiagonalPath = (from, to, board) => {
-  //   let maxDistance = 0
-  //   let nextSquareX = from.x + 1
-  //   const nextSquareY = from.y
-  //   while (!board[nextSquareX][nextSquareY] || (board[nextSquareX][nextSquareY] && board[nextSquareX][nextSquareY].props.piece.player === 2)) {
-    //     maxDistance = maxDistance + 1
-    //     nextSquareX = nextSquareX + 1
-    //   }
-    //   return maxDistance
-    // }
+const evaluateForwardRightPath = (from, to, board) => {
+  let maxDistance = 0
+  let nextSquareY = from.y + 1
+  let nextSquareX = from.x - 1
+  let nextSquare = (nextSquareX >= LOWER_BOUND && nextSquareY <= UPPER_BOUND) && board[nextSquareX][nextSquareY]
+
+  while (nextSquareY >= LOWER_BOUND && nextSquareX >= LOWER_BOUND) {
+    if (nextSquare) {
+      maxDistance = maxDistance + nextSquare.props.piece.player - 1
+      return maxDistance
+    }
+    maxDistance = maxDistance + 1
+    nextSquareY = nextSquareY + 1
+    nextSquareX = nextSquareX - 1
+    nextSquare = (nextSquareX >= LOWER_BOUND && nextSquareY <= UPPER_BOUND) && board[nextSquareX][nextSquareY]
+  }
+  return maxDistance
+}
 
     // const evaluateDiagonalPath = (from, to, board) => {
       //   let maxDistance = 0
@@ -185,13 +282,17 @@ const evaluateMaxMoveDistance = (direction, from, to, board) => {
   const directions = {
     [FORWARD]: evaluateForwardPath,
     [BACK]: evaluateBackPath,
+    [LEFT]: evaluateLeftPath,
+    [RIGHT]: evaluateRightPath,
+    [FORWARDLEFT]: evaluateForwardLeftPath,
+    [FORWARDRIGHT]: evaluateForwardRightPath,
   }
 // if statement for testing
  console.log('maxmovedistance direction arg', direction)
   if(directions[direction]) {
     return directions[direction](from, to, board)
   }
-  return 3
+  return 1
 }
 //////////////////////////////////
 /////   PAWN MOVE CHECKING   /////
@@ -225,7 +326,7 @@ const isPawnMoveValid = (from, to, board) => {
 ///////////////////////////////////
 
 const isQueenMoveValid = (from, to, board) => {
-  const validDirections = [FORWARD, BACK, LEFT, RIGHT, DIAGONAL]
+  const validDirections = [FORWARD, BACK, LEFT, RIGHT, FORWARDLEFT, FORWARDRIGHT, DIAGONAL]
   const currentMoveDirection = evaluateMoveDirection(from, to)
 
   const currentMoveDirectionMaxLength = evaluateMaxMoveDistance(currentMoveDirection, from, to, board) // get max length for particular move being evaluted

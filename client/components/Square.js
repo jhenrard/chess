@@ -28,14 +28,16 @@ function collect (connect, monitor) {
 }
 
 class Square extends React.Component {
-
   render () {
     const props = this.props
     const squareNum = (props.x * 8 + props.y)
     const validMove = props.validSquares.includes(squareNum)
 
     return props.connectDropTarget(
-      <div className={(!props.canDrop && !validMove ) ? props.colorClass : "highlight"}>{props.children}</div>
+      <div className="square-container">
+        <div className={props.colorClass}>{props.children}</div>
+        {(props.canDrop || validMove) && <div className="square-highlight" />}
+      </div>
       )
   }
 }

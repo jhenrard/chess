@@ -63,6 +63,8 @@ td {
   line-height: var(--square-size);
   float: left;
   text-align: center;
+
+  /* position: relative; */
 }
 
 .brown-square {
@@ -72,6 +74,12 @@ td {
   line-height: var(--square-size);
   float: left;
   text-align: center;
+
+  /* position: relative; */
+  /* -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 5px solid rgb(155, 79, 24); */
 }
 
 .highlight {
@@ -82,6 +90,28 @@ td {
   text-align: center;
   opacity: 0.5;
   background-color: yellow;
+  /* -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 5px solid yellow; */
+}
+
+.square-container {
+  width: var(--square-size);
+  height: var(--square-size);
+  float: left;
+}
+
+.square-highlight {
+  position: absolute;
+  height: 75px;
+  width: 75px;
+  opacity: 0.5;
+  background-color: yellow;
+  float: left;
+  /* z-index: 1;
+  top: 0;
+  left: 0; */
 }
 
 img {
