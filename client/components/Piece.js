@@ -30,12 +30,16 @@ const collect = (connect, monitor) => {
 class Piece extends React.Component {
 
   handleMouseDown (props) {
-    const validSquares = findDestinationsForPiece(props.piece.piece, {x: props.piece.x, y: props.piece.y}, props.board) // returns potential move cells
-    props.addSquares(validSquares) // set validSquares on state
+    // if (props.piece.player === props.currentPlayer) {
+      const validSquares = findDestinationsForPiece(props.piece.piece, {x: props.piece.x, y: props.piece.y}, props.board) // returns potential move cells
+      props.addSquares(validSquares) // set validSquares on state
+    // }
   }
 
   handleMouseUp (props) {
-    props.removeAllSquares()
+    // if (props.piece.player === props.currentPlayer) {
+      props.removeAllSquares()
+    // }
   }
 
   render () {
@@ -54,6 +58,7 @@ const mapStateToProps = (state) => {
   return {
     validSquares: state.validSquares,
     board: state.board,
+    // currentPlayer: state.currentPlayer,
   }
 }
 

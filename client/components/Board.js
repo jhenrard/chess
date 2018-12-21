@@ -3,11 +3,13 @@ import {connect} from 'react-redux'
 import Square from './Square'
 import {fetchBoard, updateBoard} from '../store/board'
 import {removeAllSquares} from '../store/validSquares'
+import {setPlayer, fetchPlayer} from '../store/currentPlayer'
 
 class Board extends React.Component {
 
   async componentDidMount () {
     this.props.fetchBoard()
+    this.props.fetchCurrentPlayer()
   }
 
   render () {
@@ -22,7 +24,7 @@ class Board extends React.Component {
 
     return (
         <div id='board'>
-        { squares }
+          { squares }
         </div>
     )
   }
@@ -31,14 +33,17 @@ class Board extends React.Component {
 const mapStateToProps = state => {
   return {
     board: state.board,
+    currentPlayer: state.currentPlayer,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     fetchBoard: () => dispatch(fetchBoard(1)),
-    updateBoard: (newBoard) => dispatch(updateBoard(1, newBoard)),
+    fetchCurrentPlayer: () => dispatch(fetchPlayer(1)),
+    updateBoard: (newBoard, currentPlayer) => dispatch(updateBoard(1, newBoard, currentPlayer)),
     removeAllSquares: () => dispatch(removeAllSquares()),
+    toggleCurrentPlayer: (player) => dispatch(setPlayer(player))
   }
 }
 

@@ -4,7 +4,8 @@ const db = require('../db')
 // database will hold games. each game will get an ID and will have the board layout with each square as blank or a piece object id
 
 const Game = db.define('game', {
-  board: Sequelize.ARRAY(Sequelize.ARRAY(Sequelize.STRING))
+  board: Sequelize.ARRAY(Sequelize.ARRAY(Sequelize.STRING)),
+  currentPlayer: Sequelize.INTEGER,
 })
 
 module.exports = Game

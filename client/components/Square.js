@@ -8,13 +8,19 @@ const squareTarget = {
   drop(props, monitor) {
     props.removeAllSquares()
     const piece = monitor.getItem()
-    const newComponent = <Piece piece={{piece: piece.piece, x: props.x, y: props.y, player: piece.player}} />
-    const newBoard = dropPiece(newComponent, piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board)
-    props.updateBoard(createServerPieces(newBoard)) // refactor to import store and use dispatch
+
+    if (piece.player === props.currentPlayer) {
+      const newComponent = <Piece piece={{piece: piece.piece, x: props.x, y: props.y, player: piece.player}} />
+      const newBoard = dropPiece(newComponent, piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board)
+      const nextPlayer = (piece.player === 1) ? 2 : 1
+
+      props.toggleCurrentPlayer(nextPlayer)
+      props.updateBoard(createServerPieces(newBoard), nextPlayer) // refactor to import store and use dispatch
+    }
   },
   canDrop(props, monitor) {
     const piece = monitor.getItem()
-    const answer = checkSquare(piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board) // refactor to get board from store
+    const answer = checkSquare(piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board, props.currentPlayer) // refactor to get board and currentplayer from store
     return answer
   }
 }
@@ -45,6 +51,7 @@ class Square extends React.Component {
 const mapStateToProps = state => {
   return {
     validSquares: state.validSquares,
+    currentPlayer: state.currentPlayer
   }
 }
 

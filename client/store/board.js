@@ -4,7 +4,6 @@ import {createComponentPieces} from '../gamelogic'
 // action types
 
 const GOT_BOARD = 'GOT_BOARD'
-const SET_BOARD = 'SET_BOARD'
 
 // action creators
 
@@ -26,9 +25,9 @@ export const fetchBoard = (id) => {
   }
 }
 
-export const updateBoard = (id, updatedServerBoard) => {
+export const updateBoard = (id, updatedServerBoard, currentPlayer) => {
   return async (dispatch) => {
-    const res = await axios.put(`/api/games/${id}`, updatedServerBoard)
+    const res = await axios.put(`/api/games/${id}`, {board: updatedServerBoard, currentPlayer})
     const game = res.data[1][0]
     const componentBoard = createComponentPieces(game.board)
     dispatch(gotBoard(componentBoard))

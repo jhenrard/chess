@@ -14,11 +14,10 @@ router.get('/:gameId', async (req, res, next) => {
 
 router.put('/:gameId', async (req, res, next) => {
   try {
-    const updatedGame = await Game.update({board: req.body}, {
+    const updatedGame = await Game.update({board: req.body.board, currentPlayer: req.body.currentPlayer}, {
       where: {id: req.params.gameId},
       returning: true,
     })
-    console.log('router.put updatedGame', updatedGame)
     res.json(updatedGame)
   } catch (error) {
     next(error)

@@ -23,10 +23,10 @@ export const removeAllSquares = () => {
 export default function (state = [], action) {
   switch (action.type) {
     case ADD_SQUARE:
-    return action.square
-  case REMOVE_ALL_SQUARES:
-    return []
-  default:
-    return state
+      return action.square
+    case REMOVE_ALL_SQUARES:
+      return []
+    default:
+      return state
   }
 }
