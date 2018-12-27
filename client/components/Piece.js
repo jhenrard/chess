@@ -30,16 +30,16 @@ const collect = (connect, monitor) => {
 class Piece extends React.Component {
 
   handleMouseDown (props) {
-    // if (props.piece.player === props.currentPlayer) {
-      const validSquares = findDestinationsForPiece(props.piece.piece, {x: props.piece.x, y: props.piece.y}, props.board) // returns potential move cells
+    if (props.piece.player === props.currentPlayer) {  //remove this line when 2player done
+      const validSquares = findDestinationsForPiece(props.piece.piece, {x: props.piece.x, y: props.piece.y}, props.board, props.currentPlayer) // returns potential move cells
       props.addSquares(validSquares) // set validSquares on state
-    // }
+    }
   }
 
   handleMouseUp (props) {
-    // if (props.piece.player === props.currentPlayer) {
+    if (props.piece.player === props.currentPlayer) { //remove this line when 2player done
       props.removeAllSquares()
-    // }
+    }
   }
 
   render () {
@@ -58,7 +58,7 @@ const mapStateToProps = (state) => {
   return {
     validSquares: state.validSquares,
     board: state.board,
-    // currentPlayer: state.currentPlayer,
+    currentPlayer: state.currentPlayer,
   }
 }
 

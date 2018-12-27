@@ -3,13 +3,15 @@ import {connect} from 'react-redux'
 import Square from './Square'
 import {fetchBoard, updateBoard} from '../store/board'
 import {removeAllSquares} from '../store/validSquares'
-import {setPlayer, fetchPlayer} from '../store/currentPlayer'
+import {setPlayerTurn, fetchPlayerTurn} from '../store/currentPlayerTurn'
+import {setPlayer} from '../store/currentPlayer'
 
 class Board extends React.Component {
 
   async componentDidMount () {
     this.props.fetchBoard()
-    this.props.fetchCurrentPlayer()
+    await this.props.fetchcurrentPlayerTurn()
+    this.props.setPlayer(this.props.currentPlayerTurn) //temporary. setting currentplayer equal to currentplayerturn until game is truly 2 player
   }
 
   render () {
@@ -33,6 +35,7 @@ class Board extends React.Component {
 const mapStateToProps = state => {
   return {
     board: state.board,
+    currentPlayerTurn: state.currentPlayerTurn,
     currentPlayer: state.currentPlayer,
   }
 }
@@ -40,10 +43,11 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     fetchBoard: () => dispatch(fetchBoard(1)),
-    fetchCurrentPlayer: () => dispatch(fetchPlayer(1)),
-    updateBoard: (newBoard, currentPlayer) => dispatch(updateBoard(1, newBoard, currentPlayer)),
+    fetchcurrentPlayerTurn: () => dispatch(fetchPlayerTurn(1)),
+    updateBoard: (newBoard, currentPlayerTurn) => dispatch(updateBoard(1, newBoard, currentPlayerTurn)),
     removeAllSquares: () => dispatch(removeAllSquares()),
-    toggleCurrentPlayer: (player) => dispatch(setPlayer(player))
+    togglecurrentPlayerTurn: (player) => dispatch(setPlayerTurn(player)),
+    setPlayer: (player) => dispatch(setPlayer(player)),
   }
 }
 

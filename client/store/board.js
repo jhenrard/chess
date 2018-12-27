@@ -25,9 +25,9 @@ export const fetchBoard = (id) => {
   }
 }
 
-export const updateBoard = (id, updatedServerBoard, currentPlayer) => {
+export const updateBoard = (id, updatedServerBoard, currentPlayerTurn) => {
   return async (dispatch) => {
-    const res = await axios.put(`/api/games/${id}`, {board: updatedServerBoard, currentPlayer})
+    const res = await axios.put(`/api/games/${id}`, {board: updatedServerBoard, currentPlayerTurn})
     const game = res.data[1][0]
     const componentBoard = createComponentPieces(game.board)
     dispatch(gotBoard(componentBoard))

@@ -1,3 +1,8 @@
+///////////////////////////////////////////////////
+///    NOT BEING USED YET BUT WILL BE NEEDED    ///
+///////////////////////////////////////////////////
+
+
 import axios from 'axios'
 
 // action types
@@ -23,13 +28,7 @@ export const setPlayer = (player) => {
 
 // thunk creators
 
-export const fetchPlayer = (id) => {
-  return async (dispatch) => {
-    const res = await axios.get(`/api/games/${id}`)
-    const {data: game} = res
-    dispatch(getPlayer(game.currentPlayer))
-  }
-}
+
 
 // reducer
 

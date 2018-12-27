@@ -5,7 +5,7 @@ const db = require('../db')
 
 const Game = db.define('game', {
   board: Sequelize.ARRAY(Sequelize.ARRAY(Sequelize.STRING)),
-  currentPlayer: Sequelize.INTEGER,
+  currentPlayerTurn: Sequelize.INTEGER,
 })
 
 module.exports = Game

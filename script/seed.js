@@ -13,7 +13,7 @@ async function seed() {
   ])
 
   const games = await Promise.all([
-    Game.create({board: [['P2_Rook', 'P2_Knight', 'P2_Bishop', 'P2_Queen', 'P2_King', 'P2_Bishop', 'P2_Knight', 'P2_Rook'], ['P2_Pawn', 'P2_Pawn', 'P2_Pawn', 'P2_Pawn', 'P2_Pawn', 'P2_Pawn', 'P2_Pawn', 'P2_Pawn'], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['P1_Pawn', 'P1_Pawn', 'P1_Pawn', 'P1_Pawn', 'P1_Pawn', 'P1_Pawn', 'P1_Pawn', 'P1_Pawn'], ['P1_Rook', 'P1_Knight', 'P1_Bishop', 'P1_Queen', 'P1_King', 'P1_Bishop', 'P1_Knight', 'P1_Rook']], currentPlayer: 1})
+    Game.create({board: [['P2_Rook', 'P2_Knight', 'P2_Bishop', 'P2_Queen', 'P2_King', 'P2_Bishop', 'P2_Knight', 'P2_Rook'], ['P2_Pawn', 'P2_Pawn', 'P2_Pawn', 'P2_Pawn', 'P2_Pawn', 'P2_Pawn', 'P2_Pawn', 'P2_Pawn'], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', ''], ['P1_Pawn', 'P1_Pawn', 'P1_Pawn', 'P1_Pawn', 'P1_Pawn', 'P1_Pawn', 'P1_Pawn', 'P1_Pawn'], ['P1_Rook', 'P1_Knight', 'P1_Bishop', 'P1_Queen', 'P1_King', 'P1_Bishop', 'P1_Knight', 'P1_Rook']], currentPlayerTurn: 1})
   ])
 
   console.log(`seeded ${users.length} users`)
