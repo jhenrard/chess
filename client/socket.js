@@ -4,6 +4,7 @@ const socket = io(window.location.origin)
 
 socket.on('connect', () => {
   console.log('Connected!')
+  console.log(socket)
 })
 
 export default socket
