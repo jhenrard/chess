@@ -8,7 +8,6 @@ const flipBoard = (board) => {
   return flippedPartial.reverse()
 }
 
-///////////// MOVE TO UTILS FILE /////////////
 export function createComponentPieces (serverBoard, currentPlayer) {
   const componentBoard = serverBoard.map( (row, rowIdx) => {
     return row.map( (serverPiece, col) => {
@@ -27,7 +26,6 @@ export function createComponentPieces (serverBoard, currentPlayer) {
   return componentBoard
 }
 
-///////////// MOVE TO UTILS FILE /////////////
 export function createServerPieces (componentBoard, currentPlayer) {
   let serverBoard = componentBoard.map( (row) => {
     return row.map( (componentPiece) => {
@@ -264,10 +262,10 @@ const pawnMoveDirection = (from, to) => {
   }
 }
 
-const isPawnMoveValid = (from, to, board) => {
+const isPawnMoveValid = (from, to, board, currentPlayer) => {
   const moveType = pawnMoveDirection(from, to)
-  const ownPieceInWay = board[to.x][to.y] && board[to.x][to.y].props.piece.player === 1
-  const opponentPieceToTake = board[to.x][to.y] && board[to.x][to.y].props.piece.player === 2
+  const ownPieceInWay = board[to.x][to.y] && board[to.x][to.y].props.piece.player === currentPlayer
+  const opponentPieceToTake = board[to.x][to.y] && board[to.x][to.y].props.piece.player !== currentPlayer
   const valid = ((moveType === 'diagonal' && !opponentPieceToTake) || (moveType === 'forward' && opponentPieceToTake)) ? 'invalid' : moveType
   return (valid !== 'invalid' && !ownPieceInWay)
 }

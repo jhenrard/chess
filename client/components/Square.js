@@ -8,10 +8,12 @@ const squareTarget = {
   drop(props, monitor) {
     props.removeAllSquares()
     const piece = monitor.getItem()
+    const fromX = (props.currentPlayer === 2) ? 7 - piece.x : piece.x
+    const fromY = (props.currentPlayer === 2) ? 7 - piece.y : piece.y
 
     if (piece.player === props.currentPlayerTurn) {
       const newComponent = <Piece piece={{piece: piece.piece, x: props.x, y: props.y, player: piece.player}} />
-      const newBoard = dropPiece(newComponent, piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board)
+      const newBoard = dropPiece(newComponent, piece, {x: fromX, y: fromY}, {x: props.x, y: props.y}, props.board)
       const nextPlayer = (piece.player === 1) ? 2 : 1
 
       props.togglecurrentPlayerTurn(nextPlayer)
@@ -21,8 +23,8 @@ const squareTarget = {
   },
   canDrop(props, monitor) {
     const piece = monitor.getItem()
-    let fromX = (props.currentPlayer === 2) ? 7 - piece.x : piece.x
-    let fromY = (props.currentPlayer === 2) ? 7 - piece.y : piece.y
+    const fromX = (props.currentPlayer === 2) ? 7 - piece.x : piece.x
+    const fromY = (props.currentPlayer === 2) ? 7 - piece.y : piece.y
 
     const answer = checkSquare(piece, {x: fromX, y: fromY}, {x: props.x, y: props.y}, props.board, props.currentPlayer) // refactor to get board and currentPlayer from store
     return answer
