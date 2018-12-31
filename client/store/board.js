@@ -17,20 +17,20 @@ export const gotBoard = (board) => {
 
 // thunk creators
 
-export const fetchBoard = (id) => {
+export const fetchBoard = (id, currentPlayer) => {
   return async (dispatch) => {
     const res = await axios.get(`/api/games/${id}`)
     const {data: game} = res
-    const componentBoard = createComponentPieces(game.board)
+    const componentBoard = createComponentPieces(game.board, currentPlayer)
     dispatch(gotBoard(componentBoard))
   }
 }
 
-export const updateBoard = (id, updatedServerBoard, currentPlayerTurn) => {
+export const updateBoard = (id, updatedServerBoard, currentPlayerTurn, currentPlayer) => {
   return async (dispatch) => {
     const res = await axios.put(`/api/games/${id}`, {board: updatedServerBoard, currentPlayerTurn})
     const game = res.data[1][0]
-    const componentBoard = createComponentPieces(game.board)
+    const componentBoard = createComponentPieces(game.board, currentPlayer)
     dispatch(gotBoard(componentBoard))
     socket.emit('drop', game.board, currentPlayerTurn)
   }

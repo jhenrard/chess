@@ -3,7 +3,6 @@ import {DropTarget} from 'react-dnd'
 import {connect as connectRedux} from 'react-redux'
 import Piece from './Piece'
 import {createServerPieces, dropPiece, checkSquare} from '../gamelogic'
-import socket from '../socket';
 
 const squareTarget = {
   drop(props, monitor) {
@@ -17,11 +16,7 @@ const squareTarget = {
 
       props.togglecurrentPlayerTurn(nextPlayer)
       // props.setPlayer(nextPlayer)
-      props.updateBoard(createServerPieces(newBoard), nextPlayer) // refactor to import store and use dispatch
-
-      // const newBoard2 = props.fetchBoard()
-      // console.log('newBoard2', newBoard2)
-      // socket.emit('drop', props.fetchBoard())
+      props.updateBoard(createServerPieces(newBoard, props.currentPlayer), nextPlayer, props.currentPlayer) // refactor to import store and use dispatch
     }
   },
   canDrop(props, monitor) {

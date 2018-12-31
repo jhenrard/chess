@@ -3,8 +3,13 @@
 import React from 'react'
 import {Piece} from './components'
 
+const flipBoard = (board) => {
+  const flippedPartial = board.map(row => row.reverse())
+  return flippedPartial.reverse()
+}
+
 ///////////// MOVE TO UTILS FILE /////////////
-export function createComponentPieces (serverBoard) {
+export function createComponentPieces (serverBoard, currentPlayer) {
   const componentBoard = serverBoard.map( (row, rowIdx) => {
     return row.map( (serverPiece, col) => {
       const player = Number(serverPiece[1])
@@ -16,12 +21,15 @@ export function createComponentPieces (serverBoard) {
       }
     })
   })
+  if (currentPlayer === 2) {
+    return flipBoard(componentBoard)
+  }
   return componentBoard
 }
 
 ///////////// MOVE TO UTILS FILE /////////////
-export function createServerPieces (componentBoard) {
-  const serverBoard = componentBoard.map( (row) => {
+export function createServerPieces (componentBoard, currentPlayer) {
+  let serverBoard = componentBoard.map( (row) => {
     return row.map( (componentPiece) => {
       if(componentPiece) {
         const piece = componentPiece.props.piece
@@ -31,8 +39,12 @@ export function createServerPieces (componentBoard) {
       }
     })
   })
+  if (currentPlayer === 2) {
+    return flipBoard(serverBoard)
+  }
   return serverBoard
 }
+
 
 ////////////////////////////////////////////
 /////   UTILITIES FOR CHECKING MOVES   /////
