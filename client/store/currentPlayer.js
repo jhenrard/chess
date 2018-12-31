@@ -1,10 +1,3 @@
-///////////////////////////////////////////////////
-///    NOT BEING USED YET BUT WILL BE NEEDED    ///
-///////////////////////////////////////////////////
-
-
-import axios from 'axios'
-
 // action types
 
 const GET_PLAYER = 'GET_PLAYER'
@@ -25,10 +18,6 @@ export const setPlayer = (player) => {
     player,
   }
 }
-
-// thunk creators
-
-
 
 // reducer
 

@@ -21,7 +21,10 @@ const squareTarget = {
   },
   canDrop(props, monitor) {
     const piece = monitor.getItem()
-    const answer = checkSquare(piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board, props.currentPlayer) // refactor to get board and currentPlayer from store
+    let fromX = (props.currentPlayer === 2) ? 7 - piece.x : piece.x
+    let fromY = (props.currentPlayer === 2) ? 7 - piece.y : piece.y
+
+    const answer = checkSquare(piece, {x: fromX, y: fromY}, {x: props.x, y: props.y}, props.board, props.currentPlayer) // refactor to get board and currentPlayer from store
     return answer
   }
 }

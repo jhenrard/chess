@@ -306,6 +306,8 @@ export function checkSquare(piece, from, to, board, currentPlayer) {
 export function findDestinationsForPiece(piece, from, board, currentPlayer) {
   const validDestinations = []
 
+  // console.log('findDestinationsForPiece board', board)
+
   for (let i = 0; i < 64; i++) {
     const row = Math.floor(i / 8)
     const col = i % 8
@@ -313,3 +315,5 @@ export function findDestinationsForPiece(piece, from, board, currentPlayer) {
   }
   return validDestinations
 }
+
+// ALL THE FROM'S AND TO'S NEED TO BE FLIPPED FOR P2
