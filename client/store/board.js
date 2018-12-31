@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {createComponentPieces} from '../gamelogic'
+import socket from '../socket';
 
 // action types
 
@@ -7,7 +8,7 @@ const GOT_BOARD = 'GOT_BOARD'
 
 // action creators
 
-const gotBoard = (board) => {
+export const gotBoard = (board) => {
   return {
     type: GOT_BOARD,
     board,
@@ -31,6 +32,7 @@ export const updateBoard = (id, updatedServerBoard, currentPlayerTurn) => {
     const game = res.data[1][0]
     const componentBoard = createComponentPieces(game.board)
     dispatch(gotBoard(componentBoard))
+    socket.emit('drop', game.board, currentPlayerTurn)
   }
 }
 

@@ -114,6 +114,10 @@ td {
   left: 0; */
 }
 
+.player-info {
+  text-align: center;
+}
+
 img {
   vertical-align: middle;
   background-color: transparent;

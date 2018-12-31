@@ -32,7 +32,7 @@ export const setPlayer = (player) => {
 
 // reducer
 
-export default function (state = 1, action) {
+export default function (state = 0, action) {
   switch (action.type) {
     case GET_PLAYER:
       return action.player

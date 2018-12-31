@@ -11,7 +11,7 @@ class Board extends React.Component {
   async componentDidMount () {
     this.props.fetchBoard()
     await this.props.fetchcurrentPlayerTurn()
-    this.props.setPlayer(this.props.currentPlayerTurn) //temporary. setting currentplayer equal to currentplayerturn until game is truly 2 player
+    // this.props.setPlayer(this.props.currentPlayerTurn) //temporary. setting currentplayer equal to currentplayerturn until game is truly 2 player
   }
 
   render () {
