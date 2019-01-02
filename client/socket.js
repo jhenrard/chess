@@ -4,15 +4,13 @@ import io from 'socket.io-client'
 import store from './store'
 import {setPlayer} from './store/currentPlayer'
 import {setPlayerTurn} from './store/currentPlayerTurn'
-import {fetchBoard} from './store/board'
-import {gotBoard} from './store/board'
+import {fetchBoard, gotBoard} from './store/board'
 import { createComponentPieces } from './gamelogic';
 
 const socket = io(window.location.origin)
 
 socket.on('connect', () => {
   console.log('Connected!')
-  console.log(socket)
 })
 
 socket.on('player', player => {
@@ -21,8 +19,9 @@ socket.on('player', player => {
 })
 
 socket.on('movedPiece', (serverBoard, currentPlayerTurn) => {
+  const currentPlayer = store.getState().currentPlayer
   store.dispatch(setPlayerTurn(currentPlayerTurn))
-  store.dispatch(gotBoard(createComponentPieces(serverBoard, currentPlayerTurn)))
+  store.dispatch(gotBoard(createComponentPieces(serverBoard, currentPlayer)))
 })
 
 export default socket
