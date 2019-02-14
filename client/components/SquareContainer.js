@@ -6,7 +6,7 @@ import {createServerPieces, dropPiece, checkSquare} from '../gamelogic'
 
 const squareTarget = {
   drop(props, monitor) {
-    props.removeAllSquares()
+    // props.removeAllSquares()
     const piece = monitor.getItem()
     const fromX = (props.currentPlayer === 2) ? 7 - piece.x : piece.x
     const fromY = (props.currentPlayer === 2) ? 7 - piece.y : piece.y

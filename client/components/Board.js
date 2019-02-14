@@ -18,15 +18,15 @@ class Board extends React.Component {
     const board = this.props.board
     const squares = []
     if (!board[0]) { return null }
-    for (let i = 0; i < 64; i++) {
-      const row = Math.floor(i / 8)
-      const col = (i % 8)
-      squares.push(<Square key={i} x={row} y={col} {...this.props} colorClass={(((row + col) % 2) === 0) ? 'white-square' : 'brown-square'}>{board[row][col]}</Square>) //refactor Square.js to import store. should not pass {...this.props}. can also calculate color class in Square component
-    }
-
+    // for (let i = 0; i < 64; i++) {
+    //   const row = Math.floor(i / 8)
+    //   const col = (i % 8)
+    //   squares.push(<Square key={i} x={row} y={col} {...this.props} colorClass={(((row + col) % 2) === 0) ? 'white-square' : 'brown-square'}>{board[row][col]}</Square>) //refactor Square.js to import store. should not pass {...this.props}. can also calculate color class in Square component
+    // }
+// flatmap board array and map each component to Square
     return (
         <div id='board'>
-          { squares }
+          {/* { squares } */}
         </div>
     )
   }

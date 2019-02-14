@@ -15,7 +15,7 @@ const pieceSource = {
     }
   },
   endDrag() {
-    store.dispatch({type: 'REMOVE_ALL_SQUARES'})
+    store.dispatch({type: 'CLEAR_HIGHLIGHT'})
   }
 }
 
