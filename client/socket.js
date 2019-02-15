@@ -15,7 +15,7 @@ socket.on('connect', () => {
 
 socket.on('player', player => {
   store.dispatch(setPlayer(player))
-  store.dispatch(fetchBoard(1, player))
+  // store.dispatch(fetchBoard(1, player))
 })
 
 socket.on('movedPiece', (serverBoard, currentPlayerTurn) => {

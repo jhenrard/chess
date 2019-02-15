@@ -1,6 +1,7 @@
 import React from 'react'
 import {DropTarget} from 'react-dnd'
 import {connect as connectRedux} from 'react-redux'
+import Square from './Square'
 import Piece from './Piece'
 import {createServerPieces, dropPiece, checkSquare} from '../gamelogic'
 
@@ -39,16 +40,23 @@ function collect (connect, monitor) {
   }
 }
 
-class Square extends React.Component {
+class SquareContainer extends React.Component {
   render () {
-    const props = this.props
-    const squareNum = (props.x * 8 + props.y)
-    const validMove = props.validSquares.includes(squareNum)
+    console.log('square container rendered')
+    const {x, y, canDrop, validSquares, connectDropTarget} = this.props
+    // const squareNum = (x * 8 + y)
+    // const validMove = validSquares.includes(x * 8 + y)
+    const colorClass = ((x + y) % 2) === 0 ? 'white-square' : 'brown-square'
 
-    return props.connectDropTarget(
+    return connectDropTarget(
       <div className="square-container">
-        <div className={props.colorClass}>{props.children}</div>
-        {(props.canDrop || validMove) && <div className="square-highlight" />}
+        <div className={colorClass}>
+          <Square x={x} y={y} />
+        </div>
+        {
+          (canDrop || validSquares.includes(x * 8 + y)) &&
+          <div className="square-highlight" />
+        }
       </div>
       )
   }
@@ -61,8 +69,5 @@ const mapStateToProps = state => {
   }
 }
 
-const connectedSquare = connectRedux(mapStateToProps)(Square)
+const connectedSquare = connectRedux(mapStateToProps)(SquareContainer)
 export default DropTarget('Piece', squareTarget, collect)(connectedSquare)
-
-
-// ASK GAEL OR GABE WHY PROPS AREN'T AVAILABLE IN SQUARETARGET? NEED TO PASS THEM FROM BOARD OR IMPORT THE STORE. DOES SQUARETARGET NEED TO BE LOWER?

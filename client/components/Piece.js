@@ -8,10 +8,10 @@ import store from '../store'
 const pieceSource = {
   beginDrag(props) {
     return {
-      x: props.piece.x,
-      y: props.piece.y,
-      player: props.piece.player,
-      piece: props.piece.piece,
+      x: props.x,
+      y: props.y,
+      player: props.player,
+      piece: props.piece,
     }
   },
   endDrag() {
@@ -30,22 +30,22 @@ const collect = (connect, monitor) => {
 class Piece extends React.Component {
 
   handleMouseDown (props) {
-    let x = (props.currentPlayer === 2) ? 7 - props.piece.x : props.piece.x
-    let y = (props.currentPlayer === 2) ? 7 - props.piece.y : props.piece.y
+    let x = (props.currentPlayer === 2) ? 7 - props.x : props.x
+    let y = (props.currentPlayer === 2) ? 7 - props.y : props.y
 
     // if (props.currentPlayer === 2) {
     //   x = 7 - x
     //   y = 7 - y
     // }
 
-    if (props.piece.player === props.currentPlayer) {
-      const validSquares = findDestinationsForPiece(props.piece.piece, {x, y}, props.board, props.currentPlayer) // returns potential move cells
+    if (props.player === props.currentPlayer) {
+      const validSquares = findDestinationsForPiece(props.piece, {x, y}, props.board, props.currentPlayer) // returns potential move cells
       props.addSquares(validSquares) // set validSquares on state
     }
   }
 
   handleMouseUp (props) {
-    if (props.piece.player === props.currentPlayer) {
+    if (props.player === props.currentPlayer) {
       props.removeAllSquares()
     }
   }
@@ -53,11 +53,11 @@ class Piece extends React.Component {
   render () {
     const props = this.props
     const img = new Image()
-    img.src = `/P${props.piece.player}_${props.piece.piece}.png`
+    img.src = `/P${props.player}_${props.piece}.png`
     props.connectDragPreview(img)
 
     return props.connectDragSource(
-        <img onMouseDown={() => this.handleMouseDown(props)} onMouseUp={() => this.handleMouseUp(props)} src={`/P${props.piece.player}_${props.piece.piece}.png`} />
+        <img onMouseDown={() => this.handleMouseDown(props)} onMouseUp={() => this.handleMouseUp(props)} src={`/P${props.player}_${props.piece}.png`} />
       )
   }
 }

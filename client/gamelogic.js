@@ -1,7 +1,5 @@
-// ASK GABE ABOUT COMPLEXITY - LINTER DID NOT LIKE COMPLEXITY AND EVENTUALLY BROKE CLICK HANDLER UNTIL MOVE SOME OF IF THEN INTO PAWN MOVE FUNCTION. WAS IN FACT PERFORMING UNNECESSARY CHECKS BUT STILL A LOT NOW
-
-import React from 'react'
-import {Piece} from './components'
+// import React from 'react'
+// import {Piece} from './components'
 
 const flipBoard = (board) => {
   const flippedPartial = board.map(row => row.reverse())

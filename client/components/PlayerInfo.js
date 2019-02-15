@@ -1,29 +1,43 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import { fetchPlayerTurn } from '../store/currentPlayerTurn';
 
-const PlayerInfo = (props) => {
-  let currentPlayerColor = 'an Observer'
-  if (props.currentPlayer === 1) {
-    currentPlayerColor = 'Player 1 - White'
-  } else if (props.currentPlayer === 2) {
-    currentPlayerColor = 'Player 2 - Black'
+class PlayerInfo extends React.Component {
+
+  componentDidMount () {
+    this.props.fetchcurrentPlayerTurn()
   }
 
-  const currentPlayerTurnColor = (props.currentPlayerTurn === 1) ? 'White' : 'Black'
+  render () {
+    let meColor = 'an Observer'
+    if (this.props.currentPlayer === 1) {
+      meColor = 'Player 1 - White'
+    } else if (this.props.currentPlayer === 2) {
+      meColor = 'Player 2 - Black'
+    }
 
-  return (
-    <div className='player-info'>
-      <span>You are {currentPlayerColor}. </span>
-      <span>It is currently {currentPlayerTurnColor}'s turn.</span>
-    </div>
-  )
+    const currentPlayerTurnColor = (this.props.currentPlayerTurn === 1) ? 'White' : 'Black'
+
+    return (
+      <div className='player-info'>
+        <span>You are {meColor}. </span>
+        <span>It is currently {currentPlayerTurnColor}'s turn.</span>
+      </div>
+    )
+  }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     currentPlayer: state.currentPlayer,
     currentPlayerTurn: state.currentPlayerTurn,
   }
 }
 
-export default connect(mapStateToProps)(PlayerInfo)
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchcurrentPlayerTurn: () => dispatch(fetchPlayerTurn(1))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlayerInfo)

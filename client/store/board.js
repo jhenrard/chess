@@ -17,12 +17,13 @@ export const gotBoard = (board) => {
 
 // thunk creators
 
-export const fetchBoard = (id, currentPlayer) => {
+export const fetchBoard = (gameId) => {
   return async (dispatch) => {
-    const res = await axios.get(`/api/games/${id}`)
+    const res = await axios.get(`/api/games/${gameId}`)
     const {data: game} = res
-    const componentBoard = createComponentPieces(game.board, currentPlayer)
-    dispatch(gotBoard(componentBoard))
+    // const componentBoard = createComponentPieces(game.board, currentPlayer)
+
+    dispatch(gotBoard(game.board))
   }
 }
 
