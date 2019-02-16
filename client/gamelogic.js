@@ -24,22 +24,34 @@ export function createComponentPieces (serverBoard, currentPlayer) {
   return componentBoard
 }
 
-export function createServerPieces (componentBoard, currentPlayer) {
-  let serverBoard = componentBoard.map( (row) => {
-    return row.map( (componentPiece) => {
-      if(componentPiece) {
-        const piece = componentPiece.props.piece
-        return `P${piece.player}_${piece.piece}`
-      } else {
-        return ''
-      }
+export function createServerBoard (board) {
+  let serverBoard = board.map( (row) => {
+    return row.map( (pieceObj) => {
+      return JSON.stringify(pieceObj)
     })
   })
-  if (currentPlayer === 2) {
-    return flipBoard(serverBoard)
-  }
+  // if (currentPlayer === 2) {
+  //   return flipBoard(serverBoard)
+  // }
   return serverBoard
 }
+
+// export function createServerPieces (componentBoard, currentPlayer) {
+//   let serverBoard = componentBoard.map( (row) => {
+//     return row.map( (componentPiece) => {
+//       if(componentPiece) {
+//         const piece = componentPiece.props.piece
+//         return `P${piece.player}_${piece.piece}`
+//       } else {
+//         return ''
+//       }
+//     })
+//   })
+//   if (currentPlayer === 2) {
+//     return flipBoard(serverBoard)
+//   }
+//   return serverBoard
+// }
 
 
 ////////////////////////////////////////////
@@ -168,8 +180,8 @@ const pathMaxDistanceFunctionCreator = (path) => {
     let nextSquare = pathUtils[path].nextPieceOnPathExists(nextX, nextY) && board[nextX][nextY]
 
     while (pathUtils[path].nextPieceOnPathExists(nextX, nextY)) {
-      if (nextSquare) {
-        const isItMine = (nextSquare.props.piece.player === currentPlayer) ? 0 : 1
+      if (nextSquare.player) {
+        const isItMine = (nextSquare.player && nextSquare.player === currentPlayer) ? 0 : 1
         // console.log(currentPlayer)
         maxDistance = maxDistance + isItMine // nextSquare.props.piece.player - 1
         return maxDistance
@@ -238,7 +250,7 @@ const validKnightDestinationCoords = (to) => {
 const isKnightMoveValid = (from, to, board, currentPlayer) => {
   const validDestinationCoords = validKnightDestinationCoords(to)
   const validMovement = evaluateMoveDirection(from, to) === KNIGHTMOVE
-  const validDestinationPiece = (board[to.x][to.y] && board[to.x][to.y].props.piece.player !== currentPlayer) || (validDestinationCoords && !board[to.x][to.y])
+  const validDestinationPiece = (board[to.x][to.y].player && board[to.x][to.y].player !== currentPlayer) || (validDestinationCoords && !board[to.x][to.y].player)
   return (validMovement && validDestinationPiece)
 }
 
@@ -262,8 +274,8 @@ const pawnMoveDirection = (from, to) => {
 
 const isPawnMoveValid = (from, to, board, currentPlayer) => {
   const moveType = pawnMoveDirection(from, to)
-  const ownPieceInWay = board[to.x][to.y] && board[to.x][to.y].props.piece.player === currentPlayer
-  const opponentPieceToTake = board[to.x][to.y] && board[to.x][to.y].props.piece.player !== currentPlayer
+  const ownPieceInWay = board[to.x][to.y].player && board[to.x][to.y].player === currentPlayer
+  const opponentPieceToTake = board[to.x][to.y].player && board[to.x][to.y].player !== currentPlayer
   const valid = ((moveType === 'diagonal' && !opponentPieceToTake) || (moveType === 'forward' && opponentPieceToTake)) ? 'invalid' : moveType
   return (valid !== 'invalid' && !ownPieceInWay)
 }
@@ -280,12 +292,13 @@ const pieceMoveCheckFunctions = {
 }
 
 // THIS IS USED BY SQUARE.JS DROP TARGET TO COMPLETE THE DROP
-export function dropPiece (newComponent, piece, from, to, board) { //  PIECE ALREADY HAS FROM INCLUDED, DO NOT NEED EXTRA PARAM
-  const newBoard = [...board]
-
+export function dropPiece (piece, from, to, board) { //  PIECE ALREADY HAS FROM INCLUDED, DO NOT NEED EXTRA PARAM
+  const newBoard = JSON.parse(JSON.stringify(board))
+console.log('updated piece for board: ', {...piece, x: to.x, y: to.y})
   // if (pieceMoveCheckFunctions[piece.piece](from, to, board)) {
-    newBoard[from.x][from.y] = ''
-    newBoard[to.x][to.y] = newComponent
+    newBoard[from.x][from.y] = {}
+    newBoard[to.x][to.y] = {...piece, x: to.x, y: to.y}
+
   // }
 
   return newBoard
@@ -293,7 +306,10 @@ export function dropPiece (newComponent, piece, from, to, board) { //  PIECE ALR
 
 // THIS IS USED BY SQUARE.JS DROP TARGET TO CHECK IF EACH SQUARE IS VALID MOVE FOR HIGHLIGHTING
 export function checkSquare(piece, from, to, board, currentPlayer) {
-  if (piece.player === currentPlayer) { return pieceMoveCheckFunctions[piece.piece](from, to, board, currentPlayer) }
+  if (piece.player === currentPlayer) {
+    console.log('checking square for drop')
+    return pieceMoveCheckFunctions[piece.piece](from, to, board, currentPlayer)
+  }
   return false
   // return pieceMoveCheckFunctions[piece.piece](from, to, board, currentPlayer)
 }

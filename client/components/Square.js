@@ -9,8 +9,8 @@ class Square extends React.Component {
     return (
       <div>
         {
-          board.length > 0 && JSON.parse(board[x][y]).player &&
-            <Piece player={JSON.parse(board[x][y]).player} x={x} y={y} piece={JSON.parse(board[x][y]).piece} />
+          board.length > 0 && board[x][y].player &&
+            <Piece player={board[x][y].player} x={x} y={y} piece={board[x][y].piece} />
         }
       </div>
     )
