@@ -30,17 +30,10 @@ const collect = (connect, monitor) => {
 class Piece extends React.Component {
 
   handleMouseDown (props) {
-    let x = (props.currentPlayer === 2) ? 7 - props.x : props.x
-    let y = (props.currentPlayer === 2) ? 7 - props.y : props.y
-
-    // if (props.currentPlayer === 2) {
-    //   x = 7 - x
-    //   y = 7 - y
-    // }
 
     if (props.player === props.currentPlayer) {
-      const validSquares = findDestinationsForPiece(props.piece, {x, y}, props.board, props.currentPlayer) // returns potential move cells
-      props.addSquares(validSquares) // set validSquares on state
+      const validSquares = findDestinationsForPiece(props.piece, {x: props.x, y: props.y}, props.board, props.currentPlayer)
+      props.addSquares(validSquares)
     }
   }
 

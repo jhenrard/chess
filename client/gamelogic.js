@@ -1,61 +1,5 @@
-// import React from 'react'
-// import {Piece} from './components'
-
-const flipBoard = (board) => {
-  const flippedPartial = board.map(row => row.reverse())
-  return flippedPartial.reverse()
-}
-
-export function createComponentPieces (serverBoard, currentPlayer) {
-  const componentBoard = serverBoard.map( (row, rowIdx) => {
-    return row.map( (serverPiece, col) => {
-      const player = Number(serverPiece[1])
-      const piece = serverPiece.slice(3)
-      if (piece.length) {
-        return <Piece piece={{player, x: rowIdx, y: col, piece}} />
-      } else {
-        return ''
-      }
-    })
-  })
-  if (currentPlayer === 2) {
-    return flipBoard(componentBoard)
-  }
-  return componentBoard
-}
-
-export function createServerBoard (board) {
-  let serverBoard = board.map( (row) => {
-    return row.map( (pieceObj) => {
-      return JSON.stringify(pieceObj)
-    })
-  })
-  // if (currentPlayer === 2) {
-  //   return flipBoard(serverBoard)
-  // }
-  return serverBoard
-}
-
-// export function createServerPieces (componentBoard, currentPlayer) {
-//   let serverBoard = componentBoard.map( (row) => {
-//     return row.map( (componentPiece) => {
-//       if(componentPiece) {
-//         const piece = componentPiece.props.piece
-//         return `P${piece.player}_${piece.piece}`
-//       } else {
-//         return ''
-//       }
-//     })
-//   })
-//   if (currentPlayer === 2) {
-//     return flipBoard(serverBoard)
-//   }
-//   return serverBoard
-// }
-
-
 ////////////////////////////////////////////
-/////   UTILITIES FOR CHECKING MOVES   /////
+////////       MOVE CHECKING        ////////
 ////////////////////////////////////////////
 
 const FORWARD = 'forward'
@@ -182,8 +126,7 @@ const pathMaxDistanceFunctionCreator = (path) => {
     while (pathUtils[path].nextPieceOnPathExists(nextX, nextY)) {
       if (nextSquare.player) {
         const isItMine = (nextSquare.player && nextSquare.player === currentPlayer) ? 0 : 1
-        // console.log(currentPlayer)
-        maxDistance = maxDistance + isItMine // nextSquare.props.piece.player - 1
+        maxDistance = maxDistance + isItMine
         return maxDistance
       }
       maxDistance = maxDistance + 1
@@ -200,7 +143,6 @@ const evaluateMaxMoveDistance = (direction, from, to, board, currentPlayer) => {
   const maxDistanceCalculator = pathMaxDistanceFunctionCreator(direction)
 
   if (direction !== INVALID) {
-    // console.log('evaluateMaxMoveDistance', currentPlayer)
     return maxDistanceCalculator(from, board, currentPlayer)
   }
 
@@ -294,31 +236,22 @@ const pieceMoveCheckFunctions = {
 // THIS IS USED BY SQUARE.JS DROP TARGET TO COMPLETE THE DROP
 export function dropPiece (piece, from, to, board) { //  PIECE ALREADY HAS FROM INCLUDED, DO NOT NEED EXTRA PARAM
   const newBoard = JSON.parse(JSON.stringify(board))
-console.log('updated piece for board: ', {...piece, x: to.x, y: to.y})
-  // if (pieceMoveCheckFunctions[piece.piece](from, to, board)) {
-    newBoard[from.x][from.y] = {}
-    newBoard[to.x][to.y] = {...piece, x: to.x, y: to.y}
-
-  // }
-
+  newBoard[from.x][from.y] = {}
+  newBoard[to.x][to.y] = {...piece, x: to.x, y: to.y}
   return newBoard
 }
 
 // THIS IS USED BY SQUARE.JS DROP TARGET TO CHECK IF EACH SQUARE IS VALID MOVE FOR HIGHLIGHTING
 export function checkSquare(piece, from, to, board, currentPlayer) {
   if (piece.player === currentPlayer) {
-    console.log('checking square for drop')
     return pieceMoveCheckFunctions[piece.piece](from, to, board, currentPlayer)
   }
   return false
-  // return pieceMoveCheckFunctions[piece.piece](from, to, board, currentPlayer)
 }
 
 // USED BY CLICK HANDLER IN PIECE.JS FOR HIGHLIGHTING. NEED TO REFACTOR TO ONLY EVALUATE POSSIBLE ROUTES. CHECKING WHOLE BOARD UNTIL EVERYTHING WORKS
 export function findDestinationsForPiece(piece, from, board, currentPlayer) {
   const validDestinations = []
-
-  // console.log('findDestinationsForPiece board', board)
 
   for (let i = 0; i < 64; i++) {
     const row = Math.floor(i / 8)
@@ -327,5 +260,3 @@ export function findDestinationsForPiece(piece, from, board, currentPlayer) {
   }
   return validDestinations
 }
-
-// ALL THE FROM'S AND TO'S NEED TO BE FLIPPED FOR P2

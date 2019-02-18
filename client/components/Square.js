@@ -4,7 +4,9 @@ import Piece from './Piece'
 
 class Square extends React.Component {
   render () {
-    const {x, y, board} = this.props
+    const {x, y, board, currentPlayer} = this.props
+    // const renderX = (currentPlayer === 2) ? 7 - x : x
+    // const renderY = (currentPlayer === 2) ? 7 - y : y
 
     return (
       <div>
@@ -19,7 +21,8 @@ class Square extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    board: state.board
+    board: state.board,
+    currentPlayer: state.currentPlayer,
   }
 }
 

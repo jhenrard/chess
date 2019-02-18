@@ -3,39 +3,30 @@ import {DropTarget} from 'react-dnd'
 import {connect as connectRedux} from 'react-redux'
 import {compose} from 'redux'
 import Square from './Square'
-import {createServerBoard, dropPiece, checkSquare} from '../gamelogic'
+import {dropPiece, checkSquare} from '../gamelogic'
+import {flipBoard} from '../utils'
 import {setPlayerTurn} from '../store/currentPlayerTurn'
 import {updateBoard} from '../store/board'
 
 const squareTarget = {
   drop(props, monitor) {
-    // props.removeAllSquares()
     const piece = monitor.getItem()
-    console.log('piece in SquareContainer drop: ', piece)
-    const fromX = (props.currentPlayer === 2) ? 7 - piece.x : piece.x
-    const fromY = (props.currentPlayer === 2) ? 7 - piece.y : piece.y
+
     if (piece.player === props.currentPlayerTurn) {
-      // const newComponent = <Piece piece={{piece: piece.piece, x: props.x, y: props.y, player: piece.player}} />
-      const newBoard = dropPiece(piece, {x: fromX, y: fromY}, {x: props.x, y: props.y}, props.board)
+      let newBoard = dropPiece(piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board)
+      if (piece.player === 2) {
+        newBoard = flipBoard(newBoard)
+      }
+      console.log('drop newBoard: ', newBoard)
       const nextPlayer = (piece.player === 1) ? 2 : 1
 
       props.togglecurrentPlayerTurn(nextPlayer)
-      // props.setPlayer(nextPlayer)
-
-      // CREATE SERVER PIECES NOW HAS TO JSON STRINGIFY OBJECTS FOR DB
-
-      props.updateBoard(createServerBoard(newBoard), nextPlayer, props.currentPlayer)
+      props.updateBoard(newBoard, nextPlayer, props.currentPlayer)
     }
   },
   canDrop(props, monitor) {
     const piece = monitor.getItem()
-    console.log('canDrop piece: ', piece)
-    const fromX = (props.currentPlayer === 2) ? 7 - piece.x : piece.x
-    const fromY = (props.currentPlayer === 2) ? 7 - piece.y : piece.y
-console.log('canDrop props.currentPlayer: ', props)
-    const answer = checkSquare(piece, {x: fromX, y: fromY}, {x: props.x, y: props.y}, props.board, props.currentPlayer)
-    console.log('canDrop answer: ', answer)
-    return answer
+    return checkSquare(piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board, props.currentPlayer)
   }
 }
 
@@ -50,8 +41,7 @@ function collect (connect, monitor) {
 class SquareContainer extends React.Component {
   render () {
     const {x, y, canDrop, validSquares, connectDropTarget} = this.props
-    // const squareNum = (x * 8 + y)
-    // const validMove = validSquares.includes(x * 8 + y)
+
     const colorClass = ((x + y) % 2) === 0 ? 'white-square' : 'brown-square'
 
     return connectDropTarget(
@@ -83,8 +73,5 @@ const mapDispatchToProps = dispatch => {
     updateBoard: (newBoard, currentPlayerTurn, currentPlayer) => dispatch(updateBoard(1, newBoard, currentPlayerTurn, currentPlayer)),
   }
 }
-
-// const connectedSquare = connectRedux(mapStateToProps)(SquareContainer)
-// export default DropTarget('Piece', squareTarget, collect)(connectedSquare)
 
 export default compose(connectRedux(mapStateToProps, mapDispatchToProps), DropTarget('Piece', squareTarget, collect))(SquareContainer)

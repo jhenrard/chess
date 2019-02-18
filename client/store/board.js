@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {createComponentPieces} from '../gamelogic'
+import {convertToJSON, convertFromJSON, flipBoard} from '../utils'
 import socket from '../socket';
 
 // action types
@@ -17,29 +17,28 @@ export const gotBoard = (board) => {
 
 // thunk creators
 
-export const fetchBoard = (gameId) => {
+export const fetchBoard = (gameId, player) => {
   return async (dispatch) => {
     const res = await axios.get(`/api/games/${gameId}`)
     const {data: game} = res
-    const board = game.board.map(row => {
-      return row.map(piece => {return JSON.parse(piece)})
-    }) // REFACTOR THIS TO UTILITY FUNCTION
-    // const componentBoard = createComponentPieces(game.board, currentPlayer)
-
+    let board = convertFromJSON(game.board)
+    if (player === 2) {
+      board = flipBoard(board)
+    }
     dispatch(gotBoard(board))
   }
 }
 
-export const updateBoard = (id, updatedBoard, currentPlayerTurn, currentPlayer) => {
+export const updateBoard = (id, updatedBoard, currentPlayerTurn, player) => {
   return async (dispatch) => {
-    const res = await axios.put(`/api/games/${id}`, {board: updatedBoard, currentPlayerTurn})
+    const res = await axios.put(`/api/games/${id}`, {board: convertToJSON(updatedBoard), currentPlayerTurn})
     const game = res.data[1][0]
-    // const componentBoard = createComponentPieces(game.board, currentPlayer)
-    const board = game.board.map(row => {
-      return row.map(piece => {return JSON.parse(piece)})
-    }) // REFACTOR THIS TO UTILITY FUNCTION
+    let board = convertFromJSON(game.board)
+    if (player === 2) {
+      board = flipBoard(board)
+    }
     dispatch(gotBoard(board))
-    socket.emit('drop', game.board, currentPlayerTurn)
+    socket.emit('drop', board, currentPlayerTurn)
   }
 }
 

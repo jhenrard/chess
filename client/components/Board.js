@@ -9,7 +9,7 @@ import SquareContainer from './SquareContainer';
 class Board extends React.Component {
 
   componentDidMount () {
-    this.props.fetchBoard(this.props.currentPlayer)
+    // this.props.fetchBoard(this.props.currentPlayer)
     // this.props.fetchcurrentPlayerTurn()
     // this.props.setPlayer(this.props.currentPlayerTurn) //temporary. setting currentplayer equal to currentplayerturn until game is truly 2 player
   }
@@ -56,7 +56,7 @@ const mapStateToProps = state => {
   return {
     board: state.board,
     // currentPlayerTurn: state.currentPlayerTurn,
-    // currentPlayer: state.currentPlayer,
+    currentPlayer: state.currentPlayer,
   }
 }
 
