@@ -14,6 +14,10 @@ module.exports = io => {
       socket.emit('player', 2)
     }
 
+    // socket.on('joinGame', function (player, gameId) => {
+    //   socket.broadcast.emit('')
+    // })
+
     socket.on('drop', function (board, currentPlayerTurn) {
       socket.broadcast.emit('movedPiece', board, currentPlayerTurn)
     })

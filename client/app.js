@@ -4,7 +4,7 @@ import {Provider} from 'react-redux'
 import {DragDropContextProvider} from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
-import {Board, PlayerInfo, MainPage} from './components'
+import {Board, PlayerInfo, MainPage, GameRoutes} from './components'
 import store from './store'
 import Routes from './routes'
 
@@ -13,7 +13,8 @@ const App = () => {
     <div>
       <DragDropContextProvider backend={HTML5Backend}>
         <Provider store={store}>
-          <MainPage />
+          <GameRoutes />
+          {/* <MainPage /> */}
           {/* <PlayerInfo />
           <Board /> */}
         </Provider>
