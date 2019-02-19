@@ -17,10 +17,10 @@ const squareTarget = {
       if (piece.player === 2) {
         newBoard = flipBoard(newBoard)
       }
-      console.log('drop newBoard: ', newBoard)
-      const nextPlayer = (piece.player === 1) ? 2 : 1
 
+      const nextPlayer = (piece.player === 1) ? 2 : 1
       props.togglecurrentPlayerTurn(nextPlayer)
+
       props.updateBoard(newBoard, nextPlayer, props.currentPlayer)
     }
   },
