@@ -14,7 +14,12 @@ socket.on('connect', () => {
   console.log('Connected!')
 })
 
-socket.on('player', async (player, gameId) => {
+socket.on('joinGame', function(gameId) {
+  console.log('joining game #', gameId)
+  socket.emit('joinPlayer', gameId)
+})
+
+socket.on('player', (player, gameId) => {
   // store.getState().
   store.dispatch(setPlayer(player))
   store.dispatch(fetchBoard(1, player))
