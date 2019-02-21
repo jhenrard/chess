@@ -1,14 +1,14 @@
 import axios from 'axios'
-// import socket from '../socket';
+import socket from '../socket';
 
 // action types
 
-const GOT_SINGLE_GAME = 'CREATE_SINGLE_GAME'
+const GOT_SINGLE_GAME = 'GOT_GAME'
 // const GOT_ALL_GAMES = 'GOT_ALL_GAMES'
 
 // action creators
 
-const gotGame = gameId => {
+export const gotGame = gameId => {
   return {
     type: GOT_SINGLE_GAME,
     gameId,
@@ -28,6 +28,7 @@ export const createGame = () => {
   return async dispatch => {
     const res = await axios.post('/api/games')
     const {data: game} = res
+    socket.emit('joinPlayer', game.id)
     dispatch(gotGame(game.id))
   }
 }

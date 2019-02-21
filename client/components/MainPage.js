@@ -6,7 +6,7 @@ const MainPage = () => {
   return (
     <div>
       <PlayerInfo />
-      <Lobby />
+      {/* <Lobby /> */}
       <Board />
     </div>
   )

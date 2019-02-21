@@ -1,7 +1,6 @@
 /// CLIENT ///
 
 import io from 'socket.io-client'
-import axios from 'axios'
 import store from './store'
 import {setPlayer} from './store/currentPlayer'
 import {setPlayerTurn} from './store/currentPlayerTurn'
@@ -20,17 +19,18 @@ socket.on('joinGame', function(gameId) {
 })
 
 socket.on('player', (player, gameId) => {
-  // store.getState().
   store.dispatch(setPlayer(player))
-  store.dispatch(fetchBoard(1, player))
-  // if (player === 2) {
-  //   await axios.put(`/api/games/${gameId}`, {started: true})
-  // }
+  store.dispatch(fetchBoard(gameId, player))
 })
 
 socket.on('movedPiece', (board, currentPlayerTurn) => {
+  const currentPlayer = store.getState().currentPlayer
   store.dispatch(setPlayerTurn(currentPlayerTurn))
-  store.dispatch(gotBoard(flipBoard(board)))
+  if (currentPlayer !== 0 || currentPlayerTurn === 1) {
+    store.dispatch(gotBoard(flipBoard(board)))
+  } else {
+    store.dispatch(gotBoard(board))
+  }
 })
 
 export default socket

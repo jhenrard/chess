@@ -5,7 +5,7 @@ import { fetchPlayerTurn } from '../store/currentPlayerTurn';
 class PlayerInfo extends React.Component {
 
   componentDidMount () {
-    this.props.fetchcurrentPlayerTurn()
+    this.props.fetchcurrentPlayerTurn(this.props.gameId)
   }
 
   render () {
@@ -31,12 +31,13 @@ const mapStateToProps = state => {
   return {
     currentPlayer: state.currentPlayer,
     currentPlayerTurn: state.currentPlayerTurn,
+    gameId: state.game,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchcurrentPlayerTurn: () => dispatch(fetchPlayerTurn(1))
+    fetchcurrentPlayerTurn: (gameId) => dispatch(fetchPlayerTurn(gameId))
   }
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import {createGame} from '../store/game'
+import {createGame, gotGame} from '../store/game'
 import socket from '../socket';
 
 class Lobby extends React.Component {
@@ -27,13 +27,14 @@ class Lobby extends React.Component {
     event.preventDefault()
     // console.log(this.state.gameId)
     socket.emit('joinPlayer', this.state.gameId)
+    this.props.joinGame(this.state.gameId)
   }
 
   render () {
     const {gameId} = this.props
 
     if (gameId) {
-      socket.emit('joinGame', this.props.gameId)
+      // socket.emit('joinPlayer', this.props.gameId)
       return (
         <Redirect to={`/games/${gameId}`} />
       )
@@ -61,7 +62,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createGame: () => dispatch(createGame())
+    createGame: () => dispatch(createGame()),
+    joinGame: gameId => dispatch(gotGame(gameId)),
   }
 }
 

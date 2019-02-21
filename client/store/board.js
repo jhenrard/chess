@@ -38,7 +38,7 @@ export const updateBoard = (id, updatedBoard, currentPlayerTurn, player) => {
       board = flipBoard(board)
     }
     dispatch(gotBoard(board))
-    socket.emit('drop', board, currentPlayerTurn)
+    socket.emit('drop', board, currentPlayerTurn, id)
   }
 }
 

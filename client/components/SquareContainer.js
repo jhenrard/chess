@@ -21,7 +21,7 @@ const squareTarget = {
       const nextPlayer = (piece.player === 1) ? 2 : 1
       props.togglecurrentPlayerTurn(nextPlayer)
 
-      props.updateBoard(newBoard, nextPlayer, props.currentPlayer)
+      props.updateBoard(newBoard, nextPlayer, props.currentPlayer, props.gameId)
     }
   },
   canDrop(props, monitor) {
@@ -64,13 +64,14 @@ const mapStateToProps = state => {
     validSquares: state.validSquares,
     currentPlayerTurn: state.currentPlayerTurn,
     currentPlayer: state.currentPlayer,
+    gameId: state.game,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     togglecurrentPlayerTurn: (player) => dispatch(setPlayerTurn(player)),
-    updateBoard: (newBoard, currentPlayerTurn, currentPlayer) => dispatch(updateBoard(1, newBoard, currentPlayerTurn, currentPlayer)),
+    updateBoard: (newBoard, currentPlayerTurn, currentPlayer, gameId) => dispatch(updateBoard(gameId, newBoard, currentPlayerTurn, currentPlayer)),
   }
 }
 
