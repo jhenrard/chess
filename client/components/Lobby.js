@@ -1,9 +1,6 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import axios from 'axios'
-import {createGame, gotGame} from '../store/game'
-import socket from '../socket'
 
 class Lobby extends React.Component {
   constructor () {
@@ -29,8 +26,9 @@ class Lobby extends React.Component {
 
   joinGame (event) {
     event.preventDefault()
-    socket.emit('joinPlayer', this.state.gameId)
-    this.props.joinGame(this.state.gameId)
+    this.setState(prevState => {
+      return {redirectTo: prevState.gameId}
+    })
   }
 
   render () {
@@ -56,17 +54,4 @@ class Lobby extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    gameId: state.game
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    createGame: () => dispatch(createGame()),
-    joinGame: gameId => dispatch(gotGame(gameId)),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Lobby)
+export default Lobby

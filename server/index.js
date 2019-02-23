@@ -101,8 +101,8 @@ const startListening = () => {
   )
 
   // set up our socket control center
-  const io = socketio(server)
-  require('./socket')(io, {pingTimeout: 600000})
+  const io = socketio(server, {pingTimeout: 600000})
+  require('./socket')(io)
 }
 
 const syncDb = () => db.sync()
