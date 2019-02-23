@@ -1,17 +1,35 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Board, PlayerInfo} from '../components'
+import axios from 'axios'
+import {Board, PlayerInfo, GameNotFound} from '../components'
 import {gotGame} from '../store/game'
 import socket from '../socket'
 
 class MainPage extends React.Component {
+  constructor () {
+    super()
+    this.state = {
+      notFound: false,
+    }
+  }
 
-  componentDidMount () {
-    socket.emit('joinPlayer', this.props.match.params.gameId)
-    this.props.setGame(Number(this.props.match.params.gameId))
+  async componentDidMount () {
+    const res = await axios.get(`/api/games/${this.props.match.params.gameId}`)
+    const {data: game} = res
+
+    if (game) {
+      socket.emit('joinPlayer', this.props.match.params.gameId)
+      this.props.setGame(Number(this.props.match.params.gameId))
+    } else {
+      this.setState({notFound: true})
+    }
   }
 
   render () {
+    if (this.state.notFound) {
+      return <GameNotFound />
+    }
+
     return (
       <div>
         <PlayerInfo />

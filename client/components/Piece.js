@@ -1,8 +1,8 @@
 import React from 'react'
-import { DragSource } from 'react-dnd'
-import { connect as connectRedux } from 'react-redux'
-import { addSquare, removeAllSquares } from '../store/validSquares'
-import { findDestinationsForPiece } from '../gamelogic'
+import {DragSource} from 'react-dnd'
+import {connect as connectRedux} from 'react-redux'
+import {addSquare, removeAllSquares} from '../store/validSquares'
+import {findDestinationsForPiece} from '../gamelogic'
 import store from '../store'
 
 const pieceSource = {
