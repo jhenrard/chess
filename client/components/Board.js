@@ -19,7 +19,7 @@ class Board extends React.Component {
             [...Array(64)].map((square, i) => {
               const x = Math.floor(i / 8)
               const y = i % 8
-              return <SquareContainer key={i} x={x} y={y} />
+              return <SquareContainer key={x*8+y} x={x} y={y} />
             })
           }
         </div>

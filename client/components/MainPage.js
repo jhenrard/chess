@@ -1,15 +1,30 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import {Board, PlayerInfo} from '../components'
-import Lobby from './Lobby';
+import {gotGame} from '../store/game'
+import socket from '../socket'
 
-const MainPage = () => {
-  return (
-    <div>
-      <PlayerInfo />
-      {/* <Lobby /> */}
-      <Board />
-    </div>
-  )
+class MainPage extends React.Component {
+
+  componentDidMount () {
+    socket.emit('joinPlayer', this.props.match.params.gameId)
+    this.props.setGame(Number(this.props.match.params.gameId))
+  }
+
+  render () {
+    return (
+      <div>
+        <PlayerInfo />
+        <Board />
+      </div>
+    )
+  }
 }
 
-export default MainPage
+const mapDispatchToProps = dispatch => {
+  return {
+    setGame: gameId => dispatch(gotGame(gameId)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(MainPage)

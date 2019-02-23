@@ -1,14 +1,24 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
 import { fetchPlayerTurn } from '../store/currentPlayerTurn';
 
 class PlayerInfo extends React.Component {
 
   componentDidMount () {
-    this.props.fetchcurrentPlayerTurn(this.props.gameId)
+    console.log(this.props)
+    if (this.props.gameId > 0) {
+      this.props.fetchcurrentPlayerTurn(this.props.gameId)
+    }
   }
 
   render () {
+    // if (!this.props.gameId) {
+    //   return (
+    //     <Redirect to="/" />
+    //   )
+    // }
+
     let meColor = 'an Observer'
     if (this.props.currentPlayer === 1) {
       meColor = 'Player 1 - White'

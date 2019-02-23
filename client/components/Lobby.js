@@ -1,8 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
+import axios from 'axios'
 import {createGame, gotGame} from '../store/game'
-import socket from '../socket';
+import socket from '../socket'
 
 class Lobby extends React.Component {
   constructor () {
@@ -12,6 +13,7 @@ class Lobby extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.state = {
       gameId: 0,
+      redirectTo: 0,
     }
   }
 
@@ -19,24 +21,24 @@ class Lobby extends React.Component {
     this.setState({[event.target.name]: event.target.value})
   }
 
-  createGame () {
-    this.props.createGame()
+  async createGame () {
+    const res = await axios.post('/api/games')
+    const {data: game} = res
+    this.setState({redirectTo: game.id})
   }
 
   joinGame (event) {
     event.preventDefault()
-    // console.log(this.state.gameId)
     socket.emit('joinPlayer', this.state.gameId)
     this.props.joinGame(this.state.gameId)
   }
 
   render () {
-    const {gameId} = this.props
+    const {redirectTo} = this.state
 
-    if (gameId) {
-      // socket.emit('joinPlayer', this.props.gameId)
+    if (redirectTo > 0) {
       return (
-        <Redirect to={`/games/${gameId}`} />
+        <Redirect to={`/games/${redirectTo}`} />
       )
     }
 

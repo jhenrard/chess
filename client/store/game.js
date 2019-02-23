@@ -1,10 +1,6 @@
-import axios from 'axios'
-import socket from '../socket';
-
 // action types
 
 const GOT_SINGLE_GAME = 'GOT_GAME'
-// const GOT_ALL_GAMES = 'GOT_ALL_GAMES'
 
 // action creators
 
@@ -15,40 +11,12 @@ export const gotGame = gameId => {
   }
 }
 
-// const gotAllGames = games => {
-//   return {
-//     type: GOT_ALL_GAMES,
-//     games
-//   }
-// }
-
-// thunk creators
-
-export const createGame = () => {
-  return async dispatch => {
-    const res = await axios.post('/api/games')
-    const {data: game} = res
-    socket.emit('joinPlayer', game.id)
-    dispatch(gotGame(game.id))
-  }
-}
-
-// export const fetchGames = () => {
-//   return async dispatch => {
-//     const res = await axios.get('/api/games')
-//     const {data: games} = res
-//     dispatch(gotAllGames(games))
-//   }
-// }
-
 // reducer
 
 export default function (state = 0, action) {
   switch (action.type) {
     case GOT_SINGLE_GAME:
       return action.gameId
-    // case GOT_ALL_GAMES:
-    //   return act
     default:
       return state
   }
