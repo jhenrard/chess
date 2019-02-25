@@ -5,7 +5,7 @@ import {compose} from 'redux'
 import Square from './Square'
 import {dropPiece, checkSquare} from '../gamelogic'
 import {flipBoard} from '../utils'
-import {setPlayerTurn} from '../store/currentPlayerTurn'
+import {gotPlayerTurn} from '../store/currentPlayerTurn'
 import {updateBoard} from '../store/board'
 
 const squareTarget = {
@@ -70,7 +70,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    togglecurrentPlayerTurn: (player) => dispatch(setPlayerTurn(player)),
+    togglecurrentPlayerTurn: (player) => dispatch(gotPlayerTurn(player)),
     updateBoard: (newBoard, currentPlayerTurn, currentPlayer, gameId) => dispatch(updateBoard(gameId, newBoard, currentPlayerTurn, currentPlayer)),
   }
 }

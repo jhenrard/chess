@@ -1,6 +1,10 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import axios from 'axios'
+import {gotBoard} from '../store/board'
+import {gotPlayer} from '../store/currentPlayer'
+import {gotPlayerTurn} from '../store/currentPlayerTurn'
 
 class Lobby extends React.Component {
   constructor () {
@@ -12,6 +16,12 @@ class Lobby extends React.Component {
       gameId: 0,
       redirectTo: 0,
     }
+  }
+
+  compnentDidMount () {
+    this.props.clearBoard()
+    this.props.clearCurrentPlayer()
+    this.props.clearCurrentPlayerTurn()
   }
 
   handleChange (event) {
@@ -58,4 +68,12 @@ class Lobby extends React.Component {
   }
 }
 
-export default Lobby
+const mapDispatchToProps = dispatch => {
+  return {
+    clearBoard: dispatch(gotBoard([])),
+    clearCurrentPlayer: dispatch(gotPlayer(0)),
+    clearCurrentPlayerTurn: dispatch(gotPlayerTurn(0))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Lobby)

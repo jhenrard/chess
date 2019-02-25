@@ -3,7 +3,7 @@
 import io from 'socket.io-client'
 import store from './store'
 import {setPlayerNum} from './store/currentPlayer'
-import {setPlayerTurn} from './store/currentPlayerTurn'
+import {gotPlayerTurn} from './store/currentPlayerTurn'
 import {gotBoard, fetchBoard} from './store/board'
 import {flipBoard} from './utils'
 
@@ -25,7 +25,7 @@ socket.on('player', (gameId) => {
 
 socket.on('movedPiece', (board, currentPlayerTurn) => {
   const currentPlayer = store.getState().currentPlayer
-  store.dispatch(setPlayerTurn(currentPlayerTurn))
+  store.dispatch(gotPlayerTurn(currentPlayerTurn))
   if (currentPlayer !== 0 || currentPlayerTurn === 1) {
     store.dispatch(gotBoard(flipBoard(board)))
   } else {

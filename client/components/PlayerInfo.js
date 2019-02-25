@@ -11,12 +11,14 @@ class PlayerInfo extends React.Component {
   }
 
   componentDidMount () {
+    console.log('playerInfo mounted', this.state)
     if (this.props.gameId > 0) {
       this.props.fetchcurrentPlayerTurn(this.props.gameId)
     }
   }
 
   componentDidUpdate () {
+    console.log('componentDidUpdate props', this.props)
     if (this.props.currentPlayerTurn >= 0 && this.props.currentPlayer > 0 && this.state.loading) {
       this.setState({loading: false})
     }
