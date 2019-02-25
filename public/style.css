@@ -1,26 +1,6 @@
 :root {
   --square-size: 75px;
 }
-/*
-.grab {
-  cursor: move;
-  cursor: grab;
-  cursor: -moz-grab;
-  cursor: -webkit-grab;
-}
-
-.grab:active {
-  cursor: url(images/grabbing.cur);
-  cursor: grabbing;
-  cursor: -moz-grabbing;
-  cursor: -webkit-grabbing;
-  cursor: url('https://www.google.com/intl/en_ALL/mapfiles/closedhand.cur'), auto;
-  cursor: -webkit-grabbing;
-  cursor: -moz-grabbing;
-  cursor: -o-grabbing;
-  cursor: -ms-grabbing;
-  cursor: grabbing;
-} */
 
 #board {
   width: calc(var(--square-size) * 8);
@@ -40,21 +20,6 @@ body {
   align-items: center;
   font-family: sans-serif;
 }
-/*
-table {
-  margin: 50px;
-  border-spacing: 0;
-  border-collapse: separate;
-  border: 20px solid rgb(57, 26, 20);
-}
-
-td {
-  box-sizing: border-box;
-  height: 75px;
-  width: 75px;
-  background-color: lightgrey;
-  text-align: center;
-} */
 
 .white-square {
   background-color: papayawhip;
@@ -63,8 +28,6 @@ td {
   line-height: var(--square-size);
   float: left;
   text-align: center;
-
-  /* position: relative; */
 }
 
 .brown-square {
@@ -74,12 +37,6 @@ td {
   line-height: var(--square-size);
   float: left;
   text-align: center;
-
-  /* position: relative; */
-  /* -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  border: 5px solid rgb(155, 79, 24); */
 }
 
 .highlight {
@@ -90,10 +47,6 @@ td {
   text-align: center;
   opacity: 0.5;
   background-color: yellow;
-  /* -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  border: 5px solid yellow; */
 }
 
 .square-container {
@@ -109,9 +62,6 @@ td {
   opacity: 0.5;
   background-color: yellow;
   float: left;
-  /* z-index: 1;
-  top: 0;
-  left: 0; */
 }
 
 .player-info {
@@ -144,6 +94,19 @@ nav a {
 form div {
   margin: 1em;
   display: inline-block;
+}
+
+.lobby {
+  text-align: center;
+}
+
+.welcome {
+  font-size: 3em;
+}
+
+.lobby-button {
+  background-color: blue;
+  font-size: 1.5em;
 }
 
 .loader,

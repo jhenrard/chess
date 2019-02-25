@@ -36,18 +36,21 @@ class Lobby extends React.Component {
 
     if (redirectTo > 0) {
       return (
-        <Redirect to={`/games/${redirectTo}`} />
+        <Redirect push to={`/games/${redirectTo}`} />
       )
     }
 
     return (
-      <div>
-        <button type="button" onClick={this.createGame}>Create Game</button>
+      <div className="lobby">
+        <div className="welcome">
+          Welcome to Jeremy's chess game!
+        </div>
+        <button type="button" onClick={this.createGame} className="lobby-button">Create Game</button>
         <br />
         <br />
         <form onSubmit={this.joinGame}>
           <input name="gameId" placeholder="Enter game id" onChange={this.handleChange} />
-          <button type="submit">Join Game</button>
+          <button type="submit" className="lobby-button">Join Game</button>
         </form>
       </div>
     )
