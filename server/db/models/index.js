@@ -8,6 +8,9 @@ const Game = require('./game')
  *    BlogPost.belongsTo(User)
  */
 
+User.hasOne(Game, {as: "player1"})
+User.hasOne(Game, {as: "player2"})
+
 /**
  * We'll export all of our models here, so that any time a module needs a model,
  * we can just require it from 'db/models'

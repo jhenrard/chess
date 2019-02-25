@@ -1,28 +1,16 @@
 import React from 'react'
-import {Provider} from 'react-redux'
-
 import {DragDropContextProvider} from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
-
-import {Board, PlayerInfo, MainPage, GameRoutes} from './components'
-import store from './store'
+import {Navbar} from './components'
 import Routes from './routes'
 
 const App = () => {
   return (
-    <div>
+    <div className="app-container">
       <DragDropContextProvider backend={HTML5Backend}>
-        <Provider store={store}>
-          <GameRoutes />
-          {/* <MainPage /> */}
-          {/* <PlayerInfo />
-          <Board /> */}
-        </Provider>
+          <Navbar />
+          <Routes />
       </DragDropContextProvider>
-
-      {/* // Boilermaker code I don't need for the chess app
-      <Navbar />
-      <Routes /> */}
     </div>
   )
 }

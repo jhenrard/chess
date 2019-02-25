@@ -35,7 +35,7 @@ class MainPage extends React.Component {
     }
 
     if (this.state.notFound) {
-      return <GameNotFound />
+      return <GameNotFound gameId={this.props.match.params.gameId} />
     }
 
     return (

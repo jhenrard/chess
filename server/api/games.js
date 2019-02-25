@@ -23,11 +23,24 @@ router.post('/', async (req, res, next) => {
 
 router.put('/:gameId', async (req, res, next) => {
   try {
-    const updatedGame = await Game.update({board: req.body.board, currentPlayerTurn: req.body.currentPlayerTurn}, {
-      where: {id: req.params.gameId},
-      returning: true,
-    })
-    res.json(updatedGame)
+    console.log('req body: ', req.body)
+    if (req.body.player1Id) {
+      await Game.update({player1Id: req.body.player1Id}, {
+        where: {id: req.params.gameId},
+      })
+      res.sendStatus(201)
+    } else if (req.body.player2Id) {
+      await Game.update({player2Id: req.body.player2Id}, {
+        where: {id: req.params.gameId},
+      })
+      res.sendStatus(201)
+    } else {
+      const updatedGame = await Game.update({board: req.body.board, currentPlayerTurn: req.body.currentPlayerTurn}, {
+        where: {id: req.params.gameId},
+        returning: true,
+      })
+      res.json(updatedGame)
+    }
   } catch (error) {
     next(error)
   }

@@ -10,6 +10,7 @@ class GameRoutes extends React.Component {
       <Router history={history}>
         <Switch>
           <Route exact path="/" component={Lobby} />
+          <Route path="/lobby" component={Lobby} />
           <Route path="/games/:gameId" component={MainPage} />
         </Switch>
       </Router>

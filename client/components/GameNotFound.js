@@ -5,7 +5,8 @@ class GameNotFound extends React.Component {
   render () {
     return (
       <div>
-        <h1>Game Not Found. Please return to <Link to='/'>Lobby</Link> </h1>
+        <h2 style={{textAlign: "center"}}>Game Not Found</h2>
+        <h2 style={{textAlign: "center"}}>Please return to the <Link to='/'><span style={{color: "blue"}}>Lobby</span></Link></h2>
       </div>
     )
   }
