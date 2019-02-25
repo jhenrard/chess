@@ -10,6 +10,7 @@ class MainPage extends React.Component {
     super()
     this.state = {
       notFound: false,
+      loading: true,
     }
   }
 
@@ -23,9 +24,16 @@ class MainPage extends React.Component {
     } else {
       this.setState({notFound: true})
     }
+    this.setState({loading: false})
   }
 
   render () {
+    if (this.state.loading) {
+      return (
+        <div className='loader'/>
+      )
+    }
+
     if (this.state.notFound) {
       return <GameNotFound />
     }
