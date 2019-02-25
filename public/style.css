@@ -101,11 +101,20 @@ form div {
 }
 
 .welcome {
-  font-size: 3em;
+  padding: 25px;
+  font-size: 2.5em;
 }
 
 .lobby-button {
-  background-color: blue;
+  background-color: royalblue;
+  padding: 10px 25px;
+  font-size: 1.5em;
+  color: white;
+}
+
+.join-game-input {
+  width: 150px;
+  height: 30px;
   font-size: 1.5em;
 }
 

@@ -45,11 +45,12 @@ class Lobby extends React.Component {
         <div className="welcome">
           Welcome to Jeremy's chess game!
         </div>
-        <button type="button" onClick={this.createGame} className="lobby-button">Create Game</button>
+        <button type="button" onClick={this.createGame} className="lobby-button">Create New Game</button>
         <br />
         <br />
         <form onSubmit={this.joinGame}>
-          <input name="gameId" placeholder="Enter game id" onChange={this.handleChange} />
+          <input name="gameId" placeholder="Enter game id" onChange={this.handleChange} className="join-game-input" />
+          <br />
           <button type="submit" className="lobby-button">Join Game</button>
         </form>
       </div>
