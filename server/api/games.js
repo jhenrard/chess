@@ -23,7 +23,6 @@ router.post('/', async (req, res, next) => {
 
 router.put('/:gameId', async (req, res, next) => {
   try {
-    console.log('req body: ', req.body)
     if (req.body.player1Id) {
       await Game.update({player1Id: req.body.player1Id}, {
         where: {id: req.params.gameId},
