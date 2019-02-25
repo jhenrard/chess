@@ -9,11 +9,9 @@ module.exports = io => {
       io.of('/').in(gameId).clients((err, clients) => {
         if (err) throw err
         console.log(clients)
-        if (clients.length === 0 || clients[0] === socket.id) {
-          socket.room = gameId // for debugging
+        if (clients.length === 0) {
           socket.emit('player', 1, gameId)
-        } else if (clients.length === 1 || clients[1] === socket.id) {
-          socket.room = gameId // for debugging
+        } else if (clients.length === 1) {
           socket.emit('player', 2, gameId)
         } else {
           socket.emit('player', 0, gameId)
@@ -28,7 +26,6 @@ module.exports = io => {
     })
 
     socket.on('disconnect', () => {
-      console.log(`Socket ${socket.id} has left room #${socket.room}`) // for debugging
       console.log(`Connection ${socket.id} has disconnected`)
     })
   })

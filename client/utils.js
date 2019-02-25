@@ -12,7 +12,7 @@ export const convertFromJSON = board => board.map(row => {
   return row.map(piece => {return JSON.parse(piece)})
 })
 
-// flip board
+// flip board for player 2.
 
 export const flipBoard = (board) => {
   const flippedPartial = board.map(row => row.reverse())
