@@ -16,12 +16,12 @@ install:
 before_script:
   - psql -c 'create database "chess-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
 
-before_deploy:
-  - npm run build-client # make the bundle
-  - rm -rf node_modules # omit from the tarball, since we skip cleanup
-deploy:
-  skip_cleanup: true # prevents travis from deleting the build
-  provider: heroku
-  app: jh-chess
-  api_key:
-    secure: Mwj+PFtRLasJAlujcW2rw9xtvAoRIHvVNQYxUDP+LABWO8PnK27pi/PS8qUbJC1qV9Yv52DnPpuqWmoVwFKZFbNbMRJIb9qn+5j8ji6r0Wy0153F9T8DIuBr4ZQI0m5qEKn5tejDOCThh5yr7pn/tMyCXvfUgYKLcRtJPrw3+Yqxx0Tfz45UAoaUJF2VvoBhkYcIQd8WbsGHdJBphCxtxCe2+shzoW1805g9L8qyGtWiAIJCwnkejJ514EYqqTz/kkChiF2BxWamWxD9c5uFbR9OvixALOq/G6kQr3tqGukZcd/UGBrcXXQFMPOd7IEcTLSQETskuZzNi1F/V5iOXcskuIlnaOdJT9r/wCItzMd2hu3HisC6jNdm2f6zCu8dx3HwSgSpMyZLL2Hn9m39Rw0e/IOuJac/dEtZ5RLPqj8fqJ9RGvF1vPPBW1mmI2gZguqNqYxsikjYt32rpmpeuarhdawOYalV2g6cDs59NJi/QhsV8+w9sTsAGaAlpupIkndQxM3oLfDncx2sMd/s6cl4F0oAkRlibhC3w/Ay8t3+gfB/dS99GkCbfJ9Er4rUcSOO1JUuB1wkD7DW9K03TwdDM68SwHeMOFAV4TlM2F3MarV/3ubqwrPZQFKLg/Aw/qHFylepaXQGMe5ZWrdSDVVRXbSpuYjl5PREm4N2rJU=
+# before_deploy:
+#   - npm run build-client # make the bundle
+#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
+# deploy:
+#   skip_cleanup: true # prevents travis from deleting the build
+#   provider: heroku
+#   app: YOUR-HEROKU-APP-NAME-HERE # see README
+#   api_key:
+#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
