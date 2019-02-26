@@ -222,22 +222,16 @@ const evaluatePawnMove = (type, board, from, to, currentPlayer) => {
       return board[to.x][to.y].player && board[to.x][to.y].player !== currentPlayer
     },
     doubleForward: () => {
-      return !board[to.x + 1][to.y].player && !board[to.x][to.y]
+      return !board[to.x + 1][to.y].player && !board[to.x][to.y].player
     },
-    invalid: false,
+    'invalid': () => false,
   }
-
   return pawnMoveConditions[type](board, from, to, currentPlayer)
-
 }
 
 const isPawnMoveValid = (from, to, board, currentPlayer) => {
   const moveType = pawnMoveDirection(from, to)
   return evaluatePawnMove(moveType, board, from, to, currentPlayer)
-  // const ownPieceInWay = board[to.x][to.y].player && board[to.x][to.y].player === currentPlayer
-  // const opponentPieceToTake = board[to.x][to.y].player && board[to.x][to.y].player !== currentPlayer
-  // const valid = ((moveType === 'diagonal' && !opponentPieceToTake) || (moveType === 'forward' && opponentPieceToTake)) ? 'invalid' : moveType
-  // return (valid !== 'invalid' && !ownPieceInWay)
 }
 
 
