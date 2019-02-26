@@ -8,9 +8,9 @@ import board from './board'
 import validSquares from './validSquares'
 import currentPlayerTurn from './currentPlayerTurn'
 import currentPlayer from './currentPlayer'
-import gameStatus from './gameStatus'
+import winner from './winner'
 
-const reducer = combineReducers({user, game, board, validSquares, currentPlayerTurn, currentPlayer, gameStatus})
+const reducer = combineReducers({user, game, board, validSquares, currentPlayerTurn, currentPlayer, winner})
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )

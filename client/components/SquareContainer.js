@@ -7,7 +7,7 @@ import {checkSquare} from '../gamelogic'
 import {flipBoard} from '../utils'
 import {gotPlayerTurn} from '../store/currentPlayerTurn'
 import {updateBoard} from '../store/board'
-import { checkmate } from '../store/gameStatus';
+import {setWinner} from '../store/winner';
 
 const squareTarget = {
   drop(props, monitor) {
@@ -17,7 +17,7 @@ const squareTarget = {
       let newBoard = JSON.parse(JSON.stringify(props.board))
       newBoard[piece.x][piece.y] = {}
       if (props.board[props.x][props.y].piece && props.board[props.x][props.y].piece === 'King') {
-        props.checkmate()
+        props.winner(props.gameId, props.currentPlayer)
       }
       newBoard[props.x][props.y] = {...piece}
       // let newBoard = dropPiece(piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board)
@@ -80,7 +80,7 @@ const mapDispatchToProps = dispatch => {
   return {
     togglecurrentPlayerTurn: (player) => dispatch(gotPlayerTurn(player)),
     updateBoard: (newBoard, currentPlayerTurn, currentPlayer, gameId) => dispatch(updateBoard(gameId, newBoard, currentPlayerTurn, currentPlayer)),
-    checkmate: () => dispatch(checkmate()),
+    winner: (gameId, player) => dispatch(setWinner(gameId, player)),
   }
 }
 

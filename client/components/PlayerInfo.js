@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {fetchPlayerTurn} from '../store/currentPlayerTurn';
+import {fetchWinner} from '../store/winner';
 
 class PlayerInfo extends React.Component {
   constructor () {
@@ -8,11 +9,21 @@ class PlayerInfo extends React.Component {
     this.state = {
       loading: true,
     }
+    this.meColor = 'an Observer'
+  }
+
+  setColor () {
+    if (this.props.currentPlayer === 1) {
+      this.meColor = 'White'
+    } else if (this.props.currentPlayer === 2) {
+      this.meColor = 'Black'
+    }
   }
 
   componentDidMount () {
     if (this.props.gameId > 0) {
       this.props.fetchcurrentPlayerTurn(this.props.gameId)
+      this.props.fetchWinner(this.props.gameId)
     }
   }
 
@@ -29,19 +40,25 @@ class PlayerInfo extends React.Component {
       )
     }
 
-    let meColor = 'an Observer'
-    if (this.props.currentPlayer === 1) {
-      meColor = 'White'
-    } else if (this.props.currentPlayer === 2) {
-      meColor = 'Black'
+    if (this.props.winner > 0) {
+      const winner = (this.props.winner === 1) ? 'White' : 'Black'
+      return (
+        <div className='player-info'>
+        {
+          (this.props.currentPlayer > 2) ?
+            (<div style={{padding: "10px 0px"}}>{winner} wins!</div>) :
+            (<div style={{padding: "10px 0px"}}>{(this.props.winner === this.props.currentPlayer) ? 'You win!' : 'You lose.'}</div>)
+        }
+        </div>
+      )
     }
 
     const currentPlayerTurnColor = (this.props.currentPlayerTurn === 1) ? 'White' : 'Black'
 
     return (
       <div className='player-info'>
-        <div style={{padding: "10px 0px"}}>You are {meColor}</div>
-        <div>It is {(currentPlayerTurnColor === meColor) ? <span>your turn</span> : <span>{currentPlayerTurnColor}'s turn</span>}</div>
+        <div style={{padding: "10px 0px"}}>You are {this.meColor}</div>
+        <div>It is {(currentPlayerTurnColor === this.meColor) ? <span>your turn</span> : <span>{currentPlayerTurnColor}'s turn</span>}</div>
       </div>
     )
   }
@@ -52,12 +69,15 @@ const mapStateToProps = state => {
     currentPlayer: state.currentPlayer,
     currentPlayerTurn: state.currentPlayerTurn,
     gameId: state.game,
+    status: state.gameStatus,
+    winner: state.winner
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchcurrentPlayerTurn: (gameId) => dispatch(fetchPlayerTurn(gameId))
+    fetchcurrentPlayerTurn: (gameId) => dispatch(fetchPlayerTurn(gameId)),
+    fetchWinner: (gameId) => dispatch(fetchWinner(gameId)),
   }
 }
 
