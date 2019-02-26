@@ -1,6 +1,7 @@
 import React from 'react'
 import {DragSource} from 'react-dnd'
 import {connect as connectRedux} from 'react-redux'
+import {compose} from 'redux'
 import {addSquare, removeAllSquares} from '../store/validSquares'
 import {findDestinationsForPiece} from '../gamelogic'
 import store from '../store'
@@ -14,8 +15,10 @@ const pieceSource = {
       piece: props.piece,
     }
   },
-  endDrag() {
-    store.dispatch({type: 'CLEAR_HIGHLIGHT'})
+  endDrag(props) {
+    if (props.winner === 0) {
+      store.dispatch({type: 'CLEAR_HIGHLIGHT'})
+    }
   }
 }
 
@@ -37,7 +40,7 @@ class Piece extends React.Component {
   }
 
   handleMouseUp (props) {
-    if (props.player === props.currentPlayer) {
+    if (props.player === props.currentPlayer && props.winner === 0) {
       props.removeAllSquares()
     }
   }
@@ -70,5 +73,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const connectedPiece = connectRedux(mapStateToProps, mapDispatchToProps)(Piece)
-export default DragSource('Piece', pieceSource, collect)(connectedPiece)
+// const connectedPiece = connectRedux(mapStateToProps, mapDispatchToProps)(Piece)
+// export default DragSource('Piece', pieceSource, collect)(connectedPiece)
+
+export default compose(connectRedux(mapStateToProps, mapDispatchToProps), DragSource('Piece', pieceSource, collect))(Piece)
