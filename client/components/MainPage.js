@@ -39,7 +39,7 @@ class MainPage extends React.Component {
     }
 
     return (
-      <div>
+      <div className="game-page">
         <PlayerInfo />
         <Board />
       </div>

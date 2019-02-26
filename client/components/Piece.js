@@ -46,11 +46,11 @@ class Piece extends React.Component {
   render () {
     const props = this.props
     const img = new Image()
-    img.src = `/P${props.player}_${props.piece}.png`
+    img.src = `/img/P${props.player}_${props.piece}.png`
     props.connectDragPreview(img)
 
     return props.connectDragSource(
-        <img onMouseDown={() => this.handleMouseDown(props)} onMouseUp={() => this.handleMouseUp(props)} src={`/P${props.player}_${props.piece}.png`} />
+        <img onMouseDown={() => this.handleMouseDown(props)} onMouseUp={() => this.handleMouseUp(props)} src={`/img/P${props.player}_${props.piece}.png`} />
       )
   }
 }

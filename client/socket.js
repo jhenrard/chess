@@ -4,7 +4,7 @@ import io from 'socket.io-client'
 import store from './store'
 import {setPlayerNum} from './store/currentPlayer'
 import {gotPlayerTurn} from './store/currentPlayerTurn'
-import {gotBoard, fetchBoard} from './store/board'
+import {gotBoard} from './store/board'
 import {flipBoard} from './utils'
 
 const socket = io(window.location.origin)
@@ -20,7 +20,6 @@ socket.on('joinGame', function(gameId) {
 
 socket.on('player', (gameId) => {
   store.dispatch(setPlayerNum(gameId, store.getState().user))
-  // store.dispatch(fetchBoard(gameId, player))
 })
 
 socket.on('movedPiece', (board, currentPlayerTurn) => {

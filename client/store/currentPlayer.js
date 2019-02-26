@@ -4,7 +4,6 @@ import { fetchBoard } from './board';
 // action types
 
 const GOT_PLAYER = 'GOT_PLAYER'
-// const SET_PLAYER = 'SET_PLAYER'
 
 // action creators
 
@@ -15,20 +14,12 @@ export const gotPlayer = (player) => {
   }
 }
 
-// export const setPlayer = (player) => {
-//   return {
-//     type: SET_PLAYER,
-//     player,
-//   }
-// }
-
 // thunk creators
 
 export const setPlayerNum = (gameId, user) => {
   return async dispatch => {
     const res = await axios.get(`/api/games/${gameId}`)
     const {data: game} = res
-    console.log('game in thunk: ', game)
     if (!game.player1Id || game.player1Id === user.id) {
       await axios.put(`/api/games/${gameId}`, {player1Id: user.id})
       dispatch(gotPlayer(1))
@@ -41,9 +32,6 @@ export const setPlayerNum = (gameId, user) => {
       dispatch(gotPlayer(3))
       dispatch(fetchBoard(gameId, 3))
     }
-
-    // add name - prompt in lobby and otherwise in game - store in DB - for remembering seats
-    // add auth, associate users to games
   }
 }
 

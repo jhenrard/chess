@@ -7,19 +7,19 @@ class Board extends React.Component {
   render () {
 
     if (!this.props.board.length) return (
-        <div id='board'>
+        <div className='board'>
           <div className='loader'/>
         </div>
       )
 
     return (
-        <div id='board'>
+        <div className='board'>
           {
             this.props.board.length > 0 &&
             [...Array(64)].map((square, i) => {
               const x = Math.floor(i / 8)
               const y = i % 8
-              return <SquareContainer key={x*8+y} x={x} y={y} />
+              return (<div key={x*8+y} ><SquareContainer x={x} y={y} /></div>)
             })
           }
         </div>
