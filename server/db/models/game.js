@@ -6,10 +6,10 @@ const db = require('../db')
 const Game = db.define('game', {
   board: Sequelize.ARRAY(Sequelize.ARRAY(Sequelize.STRING)),
   currentPlayerTurn: Sequelize.INTEGER,
-  // started: {
-  //   type: Sequelize.BOOLEAN,
-  //   defaultValue: false,
-  // }
+  checkmate: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  }
 })
 
 module.exports = Game

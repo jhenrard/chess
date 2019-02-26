@@ -3,17 +3,24 @@ import {DropTarget} from 'react-dnd'
 import {connect as connectRedux} from 'react-redux'
 import {compose} from 'redux'
 import Square from './Square'
-import {dropPiece, checkSquare} from '../gamelogic'
+import {checkSquare} from '../gamelogic'
 import {flipBoard} from '../utils'
 import {gotPlayerTurn} from '../store/currentPlayerTurn'
 import {updateBoard} from '../store/board'
+import { checkmate } from '../store/gameStatus';
 
 const squareTarget = {
   drop(props, monitor) {
     const piece = monitor.getItem()
 
     if (piece.player === props.currentPlayerTurn) {
-      let newBoard = dropPiece(piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board)
+      let newBoard = JSON.parse(JSON.stringify(props.board))
+      newBoard[piece.x][piece.y] = {}
+      if (props.board[props.x][props.y].piece && props.board[props.x][props.y].piece === 'King') {
+        props.checkmate()
+      }
+      newBoard[props.x][props.y] = {...piece}
+      // let newBoard = dropPiece(piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board)
       if (piece.player === 2) {
         newBoard = flipBoard(newBoard)
       }
@@ -26,7 +33,8 @@ const squareTarget = {
   },
   canDrop(props, monitor) {
     const piece = monitor.getItem()
-    return checkSquare(piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board, props.currentPlayer)
+    const validMove = checkSquare(piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board, props.currentPlayer)
+    return validMove
   }
 }
 
@@ -72,6 +80,7 @@ const mapDispatchToProps = dispatch => {
   return {
     togglecurrentPlayerTurn: (player) => dispatch(gotPlayerTurn(player)),
     updateBoard: (newBoard, currentPlayerTurn, currentPlayer, gameId) => dispatch(updateBoard(gameId, newBoard, currentPlayerTurn, currentPlayer)),
+    checkmate: () => dispatch(checkmate()),
   }
 }
 
