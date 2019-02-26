@@ -73,7 +73,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-// const connectedPiece = connectRedux(mapStateToProps, mapDispatchToProps)(Piece)
-// export default DragSource('Piece', pieceSource, collect)(connectedPiece)
-
 export default compose(connectRedux(mapStateToProps, mapDispatchToProps), DragSource('Piece', pieceSource, collect))(Piece)

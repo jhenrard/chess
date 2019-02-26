@@ -6,6 +6,7 @@ import {setPlayerNum} from './store/currentPlayer'
 import {gotPlayerTurn} from './store/currentPlayerTurn'
 import {gotBoard} from './store/board'
 import {flipBoard} from './utils'
+import {gotWinner} from './store/winner';
 
 const socket = io(window.location.origin)
 
@@ -30,6 +31,10 @@ socket.on('movedPiece', (board, currentPlayerTurn) => {
   } else {
     store.dispatch(gotBoard(board))
   }
+})
+
+socket.on('winner', (winner) => {
+  store.dispatch(gotWinner(winner))
 })
 
 export default socket

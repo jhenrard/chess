@@ -6,7 +6,7 @@ const GOT_WINNER = 'GOT_WINNER'
 
 // action creators
 
-const gotWinner = winner => {
+export const gotWinner = winner => {
   return {
     type: GOT_WINNER,
     winner,

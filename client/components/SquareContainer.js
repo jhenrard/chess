@@ -7,7 +7,8 @@ import {checkSquare} from '../gamelogic'
 import {flipBoard} from '../utils'
 import {gotPlayerTurn} from '../store/currentPlayerTurn'
 import {updateBoard} from '../store/board'
-import {setWinner} from '../store/winner';
+import {setWinner} from '../store/winner'
+import socket from '../socket'
 
 const squareTarget = {
   drop(props, monitor) {
@@ -18,6 +19,7 @@ const squareTarget = {
       newBoard[piece.x][piece.y] = {}
       if (props.board[props.x][props.y].piece && props.board[props.x][props.y].piece === 'King') {
         props.setWinner(props.gameId, props.currentPlayer)
+        socket.emit('won', props.gameId, props.currentPlayer)
       }
       newBoard[props.x][props.y] = {...piece}
       if (piece.player === 2) {
