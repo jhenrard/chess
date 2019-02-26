@@ -70,7 +70,7 @@ body {
 .white-square {
   /* background-color: papayawhip; */
   /* background-color: rgb(239, 239, 239); */
-  background-color: white;
+  /* background-color: white; */
   width: var(--square-size);
   height: var(--square-size);
   line-height: var(--square-size);
