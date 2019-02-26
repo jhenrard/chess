@@ -17,7 +17,7 @@ const squareTarget = {
       let newBoard = JSON.parse(JSON.stringify(props.board))
       newBoard[piece.x][piece.y] = {}
       if (props.board[props.x][props.y].piece && props.board[props.x][props.y].piece === 'King') {
-        props.winner(props.gameId, props.currentPlayer)
+        props.setWinner(props.gameId, props.currentPlayer)
       }
       newBoard[props.x][props.y] = {...piece}
       if (piece.player === 2) {
@@ -32,6 +32,9 @@ const squareTarget = {
   },
   canDrop(props, monitor) {
     const piece = monitor.getItem()
+    if (props.winner > 0) {
+      return false
+    }
     const validMove = checkSquare(piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board, props.currentPlayer)
     return validMove
   }
@@ -72,6 +75,7 @@ const mapStateToProps = state => {
     currentPlayerTurn: state.currentPlayerTurn,
     currentPlayer: state.currentPlayer,
     gameId: state.game,
+    winner: state.winner,
   }
 }
 
@@ -79,7 +83,7 @@ const mapDispatchToProps = dispatch => {
   return {
     togglecurrentPlayerTurn: (player) => dispatch(gotPlayerTurn(player)),
     updateBoard: (newBoard, currentPlayerTurn, currentPlayer, gameId) => dispatch(updateBoard(gameId, newBoard, currentPlayerTurn, currentPlayer)),
-    winner: (gameId, player) => dispatch(setWinner(gameId, player)),
+    setWinner: (gameId, player) => dispatch(setWinner(gameId, player)),
   }
 }
 

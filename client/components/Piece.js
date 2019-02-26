@@ -30,8 +30,7 @@ const collect = (connect, monitor) => {
 class Piece extends React.Component {
 
   handleMouseDown (props) {
-
-    if (props.player === props.currentPlayer) {
+    if (props.player === props.currentPlayer && props.winner === 0) {
       const validSquares = findDestinationsForPiece(props.piece, {x: props.x, y: props.y}, props.board, props.currentPlayer)
       props.addSquares(validSquares)
     }
@@ -60,6 +59,7 @@ const mapStateToProps = (state) => {
     validSquares: state.validSquares,
     board: state.board,
     currentPlayer: state.currentPlayer,
+    winner: state.winner,
   }
 }
 

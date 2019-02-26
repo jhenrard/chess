@@ -245,17 +245,6 @@ const pieceMoveCheckFunctions = {
   [ROOK]:  isQueenKingBishopRookMoveValid(ROOK),
 }
 
-// THIS IS USED BY SQUARE.JS DROP TARGET TO COMPLETE THE DROP
-// export function dropPiece (piece, from, to, board) { //  PIECE ALREADY HAS FROM INCLUDED, DO NOT NEED EXTRA PARAM
-//   let newBoard = JSON.parse(JSON.stringify(board))
-//   newBoard[from.x][from.y] = {}
-//   if (newBoard[to.x][to.y].piece && newBoard[to.x][to.y].piece === 'King') {
-
-//   }
-//   newBoard[to.x][to.y] = {...piece, x: to.x, y: to.y}
-//   return newBoard
-// }
-
 // THIS IS USED BY SQUARE.JS DROP TARGET TO CHECK IF EACH SQUARE IS VALID MOVE FOR HIGHLIGHTING
 export function checkSquare(piece, from, to, board, currentPlayer) {
   if (piece.player === currentPlayer) {
