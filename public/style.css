@@ -12,7 +12,7 @@
   margin-top: 25px;
   margin-left: auto;
   margin-right: auto;
-  border: 20px solid rgb(57, 26, 20);
+  border: 3px solid navy;
 }
 
 /* .game-page {
@@ -22,19 +22,22 @@
 } */
 
 html {
-  background-color: rgb(244, 244, 229);
+  /* background-color: rgb(244, 244, 229); */
+  background-color: rgb(252, 248, 242);
   color: black;
 }
 
 body {
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
+  margin: 0;
   font-family: sans-serif;
 }
 
 .navbar {
-  background-color: black;
+  /* background-color: black; */
+  background-color: navy;
+  color: white;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -49,21 +52,25 @@ body {
 }
 
 .navbar nav a {
-  color: lightblue;
+  /* color: lightblue; */
+  color: white;
   display: inline-block;
   text-align: center;
-  font-size: 20px;
+  font-size: 25px;
   /* margin: 1em; */
   transition: all 0.35s ease;
 }
 
 .logo {
-  color: lightblue;
-  font-size: 1.5em;
+  /* color: lightblue; */
+  color: white;
+  font-size: 2em;
 }
 
 .white-square {
-  background-color: papayawhip;
+  /* background-color: papayawhip; */
+  /* background-color: rgb(239, 239, 239); */
+  backround-color: white;
   width: var(--square-size);
   height: var(--square-size);
   line-height: var(--square-size);
@@ -72,7 +79,8 @@ body {
 }
 
 .brown-square {
-  background-color: rgb(155, 79, 24);
+  /* background-color: rgb(155, 79, 24); */
+  background-color: rgb(36, 128, 214);
   width: var(--square-size);
   height: var(--square-size);
   line-height: var(--square-size);
