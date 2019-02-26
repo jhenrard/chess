@@ -198,7 +198,6 @@ const isKnightMoveValid = (from, to, board, currentPlayer) => {
 
 ///////////////////////////////////////////////////////////////////////////////////
 /////     PAWN MOVE CHECKING - NEED TO REFACTOR AND ADD EN PASSANT MOVE       /////
-/////            WILL ADD EN PASSANT MOVE WHEN ADDING MOVE HISTORY            /////
 ///////////////////////////////////////////////////////////////////////////////////
 
 const pawnMoveDirection = (from, to) => {
@@ -214,12 +213,31 @@ const pawnMoveDirection = (from, to) => {
   }
 }
 
+const evaluatePawnMove = (type, board, from, to, currentPlayer) => {
+  const pawnMoveConditions = {
+    forward: () => {
+      return !board[to.x][to.y].player
+    },
+    diagonal: () => {
+      return board[to.x][to.y].player && board[to.x][to.y].player !== currentPlayer
+    },
+    doubleForward: () => {
+      return !board[to.x + 1][to.y].player && !board[to.x][to.y]
+    },
+    invalid: false,
+  }
+
+  return pawnMoveConditions[type](board, from, to, currentPlayer)
+
+}
+
 const isPawnMoveValid = (from, to, board, currentPlayer) => {
   const moveType = pawnMoveDirection(from, to)
-  const ownPieceInWay = board[to.x][to.y].player && board[to.x][to.y].player === currentPlayer
-  const opponentPieceToTake = board[to.x][to.y].player && board[to.x][to.y].player !== currentPlayer
-  const valid = ((moveType === 'diagonal' && !opponentPieceToTake) || (moveType === 'forward' && opponentPieceToTake)) ? 'invalid' : moveType
-  return (valid !== 'invalid' && !ownPieceInWay)
+  return evaluatePawnMove(moveType, board, from, to, currentPlayer)
+  // const ownPieceInWay = board[to.x][to.y].player && board[to.x][to.y].player === currentPlayer
+  // const opponentPieceToTake = board[to.x][to.y].player && board[to.x][to.y].player !== currentPlayer
+  // const valid = ((moveType === 'diagonal' && !opponentPieceToTake) || (moveType === 'forward' && opponentPieceToTake)) ? 'invalid' : moveType
+  // return (valid !== 'invalid' && !ownPieceInWay)
 }
 
 
