@@ -20,7 +20,6 @@ const squareTarget = {
         props.winner(props.gameId, props.currentPlayer)
       }
       newBoard[props.x][props.y] = {...piece}
-      // let newBoard = dropPiece(piece, {x: piece.x, y: piece.y}, {x: props.x, y: props.y}, props.board)
       if (piece.player === 2) {
         newBoard = flipBoard(newBoard)
       }

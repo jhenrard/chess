@@ -2,21 +2,14 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {fetchPlayerTurn} from '../store/currentPlayerTurn';
 import {fetchWinner} from '../store/winner';
+import PlayerTurns from './PlayerTurns'
+import Winner from './Winner';
 
 class PlayerInfo extends React.Component {
   constructor () {
     super()
     this.state = {
       loading: true,
-    }
-    this.meColor = 'an Observer'
-  }
-
-  setColor () {
-    if (this.props.currentPlayer === 1) {
-      this.meColor = 'White'
-    } else if (this.props.currentPlayer === 2) {
-      this.meColor = 'Black'
     }
   }
 
@@ -36,30 +29,18 @@ class PlayerInfo extends React.Component {
   render () {
     if (this.state.loading) {
       return (
-        <div style={{textAlign: "center"}}>Loading...</div>
+        <div className='player-info' style={{padding: "10px 0px"}}>Loading...</div>
       )
     }
 
     if (this.props.winner > 0) {
-      const winner = (this.props.winner === 1) ? 'White' : 'Black'
       return (
-        <div className='player-info'>
-        {
-          (this.props.currentPlayer > 2) ?
-            (<div style={{padding: "10px 0px"}}>{winner} wins!</div>) :
-            (<div style={{padding: "10px 0px"}}>{(this.props.winner === this.props.currentPlayer) ? 'You win!' : 'You lose.'}</div>)
-        }
-        </div>
+        <Winner winner={this.props.winner} currentPlayer={this.props.currentPlayer} />
       )
     }
 
-    const currentPlayerTurnColor = (this.props.currentPlayerTurn === 1) ? 'White' : 'Black'
-
     return (
-      <div className='player-info'>
-        <div style={{padding: "10px 0px"}}>You are {this.meColor}</div>
-        <div>It is {(currentPlayerTurnColor === this.meColor) ? <span>your turn</span> : <span>{currentPlayerTurnColor}'s turn</span>}</div>
-      </div>
+        <PlayerTurns currentPlayer={this.props.currentPlayer} currentPlayerTurn={this.props.currentPlayerTurn} />
     )
   }
 }
